@@ -1,6 +1,10 @@
 #ifndef POSITIONING_H
 #define POSITIONING_H
 
+typedef struct {
+	double x;
+	double y;
+} xy_f;
 
 typedef struct {
 	double x;

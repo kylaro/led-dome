@@ -4,6 +4,7 @@
 #include "../Effects/SnakeEffect.h"
 #include "../Effects/Firefly.h"
 #include "../Effects/Blink.h"
+#include "../Effects/Firework.h"
 class Pershing : public Pattern {
 public:
 	using Pattern::Pattern;
@@ -19,6 +20,10 @@ public:
 	std::vector<Firefly* > fireflies;
 	double rumble1 = 0;
 	double rumble2 = 0;
+	void vibrate(int p, int toggle, double intensity);
+
+	void killSnake1();
+	void killSnake2();
 
 };
 

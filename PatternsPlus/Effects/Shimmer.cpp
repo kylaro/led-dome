@@ -8,8 +8,12 @@ void Shimmer::init() {
 		led = strut->leds[rand() % strut->leds.size()];
 	}
 	else {
-		led = mapping->dome->leds[rand() % mapping->dome->leds.size()];
+		if (led == NULL) {
+			led = mapping->dome->leds[rand() % mapping->dome->leds.size()];
+		}
+		
 	}
+	
 	startTime = nowMillis();
 	initted = 1;
 }

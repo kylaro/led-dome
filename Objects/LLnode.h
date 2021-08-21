@@ -31,15 +31,10 @@ public:
 	LLnode* strutNext();
 	LLnode* getNextHighest();
 	LLnode* getNeighbor();
+	LLnode* getNeighborOrThis();
 	LLnode* getNeighborAngle(double angle);
-	double magnitude(xyz_f xyz);
-	void normalize(xyz_f* xyz);
-	xyz_f subtract(xyz_f xyz1, xyz_f xyz2);
-	double dot(xyz_f xyz1, xyz_f xyz2);
-	xyz_f cross(xyz_f a, xyz_f b);
-	void getOrthogVec(xyz_f xyz, xyz_f* ortho, char xyorz);
-	double wrappedDist(double x, double y, double wrap);
-	sph_f getSpherical(xyz_f xyz);
+	LLnode* getNeighborOrThisAngle(double angle);
+	
 	std::vector<LLnode*> nextHighest;
 	LLnode* nextHighestOnStrut = NULL;
 	void addNeighbor(LLnode* nb);

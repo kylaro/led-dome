@@ -10,8 +10,8 @@ public:
 	void run();
 	void init();
 	void release();
-	LED* led;
-	Strut* strut;
+	LED* led = NULL;
+	Strut* strut = NULL;
 	void setStrut(Strut* strut);
 	int strutSet = 0;
 	int duration = 10000;

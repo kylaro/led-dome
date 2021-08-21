@@ -1,5 +1,5 @@
 #include "LLnode.h"
-
+#include "../PatternsPlus/vectormath.h"
 bool LLnode::isGood() {
 	return (this->prevNodes.size() > 0) && (this->nextNodes.size() > 0);
 }
@@ -229,97 +229,62 @@ LLnode* LLnode::getNextHighest() {
 	
        	return nextHighest[rand()%nextHighest.size()];
 }
-
+LLnode* LLnode::getNeighborOrThis() {
+	if (neighbors.size() > 0) {
+		if (rand() % (neighbors.size() + 1) == 0) {
+			return this;
+		}
+		return this->neighbors[rand() % neighbors.size()];
+	}
+	return this;
+}
 LLnode* LLnode::getNeighbor() {
 	if (neighbors.size() > 0) {
 		return this->neighbors[rand() % neighbors.size()];
 	}
 	return NULL;
 }
-double LLnode::magnitude(xyz_f xyz) {
-	if (xyz.x + xyz.y + xyz.z == 0) {
-		return 0;
-	}
-	return sqrt(xyz.x * xyz.x + xyz.y * xyz.y + xyz.z * xyz.z);
-}
-void LLnode::normalize(xyz_f* xyz) {
-	double magn = magnitude(*xyz);
-	if (magn == 0) {
-		return;
-	}
-	xyz->x = xyz->x / magn;
-	xyz->y = xyz->y / magn;
-	xyz->z = xyz->z / magn;
-}
 
-xyz_f LLnode::subtract(xyz_f xyz1, xyz_f xyz2) {
-	xyz_f result;
-	result.x = xyz1.x - xyz2.x;
-	result.y= xyz1.y - xyz2.y;
-	result.z = xyz1.z - xyz2.z;
-	return result;
-}
+LLnode* LLnode::getNeighborOrThisAngle(double angle)
+{
+	xyz_f targetP = this->led->xyz;
+	xy_f xy = projectPoint(this->node->xyz, targetP);
 
+	double smallestDiff2 = 100;
+	LLnode* selectedNext = NULL;
 
-
-double LLnode::dot(xyz_f xyz1, xyz_f xyz2) {
-	double result = 0;
-	result += xyz1.x * xyz2.x;
-	result += xyz1.y * xyz2.y;
-	result += xyz1.z * xyz2.z;
-	return result;
-}
-
-void LLnode::getOrthogVec(xyz_f xyz, xyz_f* ortho, char xyorz) {
-	switch (xyorz) {
-	case 'x'://solve for X
-		ortho->x = ((-xyz.y * ortho->y) - (xyz.z * ortho->z)) / xyz.x;
-		break;
-	case 'y'://solve for Y
-		ortho->y = ((-xyz.x * ortho->x) - (xyz.z * ortho->z)) / xyz.y;
-		break;
-	case 'z'://solve for Z
-		ortho->z = ((-xyz.y * ortho->y) - (xyz.x * ortho->x)) / xyz.z;
-		break;
-	}
-}
-double LLnode::wrappedDist(double x, double y, double wrap) {
-	double dx = abs(x - y);
-	double dist = dx > wrap / 2 ? 2 * wrap - dx : dx;
-	if (dist > dx) {
-		return dx;// dx is smaller
-	}
-	else {
-		return dist;// dist is smaller
+	double neighborAngle = atan2(xy.y, xy.x);
+	double diff = wrappedDist(angle, neighborAngle, 3.141593);
+	if (diff < smallestDiff2) {
+		smallestDiff2 = diff;
+		selectedNext = this;
 	}
 
-}
+	for (LLnode* neighbor : neighbors) {
+		targetP = neighbor->led->xyz;
+		//double x = dot(vex, subtract(targetP, pp));
+		//double y = dot(vey, subtract(targetP, pp));
+		xy = projectPoint(this->node->xyz, targetP);
+		//can get angle from these
+		double neighborAngle = atan2(xy.y, xy.x);
+		double diff = wrappedDist(angle, neighborAngle, 3.141593);
+		if (diff < smallestDiff2) {
+			smallestDiff2 = diff;
+			selectedNext = neighbor;
+		}
+	}
 
-sph_f LLnode::getSpherical(xyz_f xyz) {
-	sph_f ret;
-	ret.r = magnitude(xyz);
-	ret.theta = atan2(xyz.y, xyz.x);
-	ret.phi = acos(xyz.z / ret.r);
-	return ret;
+	return selectedNext;
 }
-
-xyz_f LLnode::cross(xyz_f a, xyz_f b) {
-	xyz_f result;
-	result.x = a.y * b.z - a.z * b.y;
-	result.y = a.z * b.x - a.x * b.z;
-	result.z = a.x * b.y - a.y * b.x;
-	return result;
-}
-
 LLnode* LLnode::getNeighborAngle(double angle)
 {
 	
-	xyz_f pp = this->node->xyz;
+	/*xyz_f pp = this->node->xyz;
 	if (pp.x == 0 && pp.z == 0) {
 		//special case for top node
 		pp.z = -1;
 	}
-	xyz_f po = { 0,pp.y-200,0 };
+	xyz_f po = { 0,pp.y - 200,0 };
 	xyz_f vn = subtract(pp, po);
 	xyz_f voo = { po.x - pp.x, 0, po.z - pp.z };
 	normalize(&vn);
@@ -331,16 +296,17 @@ LLnode* LLnode::getNeighborAngle(double angle)
 	xyz_f vey = voy;// subtract(voy, p);
 	xyz_f vex = cross(vn, vey);
 	normalize(&vey);
-	normalize(&vex);
+	normalize(&vex);*/
 	double smallestDiff2 = 100;
 	LLnode* selectedNext = NULL;
 
 	for (LLnode* neighbor : neighbors) {
 		xyz_f targetP = neighbor->led->xyz;
-		double x = dot(vex, subtract(targetP, pp));
-		double y = dot(vey, subtract(targetP, pp));
+		//double x = dot(vex, subtract(targetP, pp));
+		//double y = dot(vey, subtract(targetP, pp));
+		xy_f xy = projectPoint(this->node->xyz, targetP);
 		//can get angle from these
-		double neighborAngle = atan2(y, x);
+		double neighborAngle = atan2(xy.y, xy.x);
 		double diff = wrappedDist(angle, neighborAngle, 3.141593);
 		if (diff < smallestDiff2) {
 			smallestDiff2 = diff;

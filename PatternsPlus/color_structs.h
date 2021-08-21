@@ -1,6 +1,7 @@
 #ifndef COLORSTRUCTS_H
 #define COLORSTRUCTS_H
 #include <cstdint>
+#include "../Objects/LLnode.h"
 
 
 

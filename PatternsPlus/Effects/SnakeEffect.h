@@ -14,7 +14,7 @@ public:
 
 	hsv_f color;
 	int player;
-	LLnode* curNode;
+	LLnode* curNode = NULL;
 	LLnode* prevNode;
 	int dir = 1;
 	LLnode* lookaheadNode;
@@ -24,8 +24,12 @@ public:
 	double velocity = 0.5;
 	double position = 0;
 	std::vector<ihsv_f> trail;
-	double length = 0.5;
+	double length = 2;
 	double food = 0;
+	double hue = 0;
+	std::vector<LLnode *> pastNodes;
+	std::vector<LLnode*> nodeTouches;
+	int count = 0;
 };
 
 
