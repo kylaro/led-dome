@@ -15,6 +15,8 @@ public:
 	bool ledConfirmed(int i);
 	//std::thread start(); // attempted threading...
 	virtual void run(bool real);
+	virtual void init();
+	virtual void release();
 	Dome* dome;
 	Shared* shared;
 	Mapping* mapping;

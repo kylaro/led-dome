@@ -206,8 +206,17 @@ namespace xbox {
 		return 0;
 	}
 
+	void rumble(int p) {
+		static double rumble1 = 0;
+		static double rumble2 = 0;
+
+	}
+
 	void vibrate(int p, double val) {
 		CXBOXController* Player = getP(p);
+		if (Player == NULL) {
+			return;
+		}
 		if (val < 0) {
 			val = 0;
 		}
@@ -215,9 +224,6 @@ namespace xbox {
 			val = 1;
 		}
 
-		if (Player == NULL) {
-			return;
-		}
 		Player->Vibrate(val*65535.0, val*65535.0);
 	}
 

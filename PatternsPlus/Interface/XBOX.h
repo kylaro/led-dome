@@ -6,13 +6,13 @@ const int P2 = 2;
 namespace xbox {
 	//const int P1 = 1;
 	//const int P2 = 2;
-	int getA(int p);
+
 	void vibrate(int p, double val);
 	int getAPress(int p);
 	int anyPressed(int p);
 	int anyHeld(int p);
 
-
+	void rumble(int p);
 	double getLeftThumbX(int p);
 	double getLeftThumbAngle(int p);
 	int getLeftThumbActive(int p);

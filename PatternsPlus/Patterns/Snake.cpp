@@ -53,19 +53,19 @@ void Snake::run(bool real) {
         lookaheadNode = curNode;
         dir = curNode->getStrutDir();
     }
-    ledInterface->setHSV(curNode->led, on);
+    ledInterface->forceHSV(curNode->led, on);
     for (int i = trail_k; i < trail.size(); i++) {
         if (trail[i].hsv.v < 0) {
             trail_k = i;
         }
         trail[i].hsv.v -= 0.04;
-        ledInterface->setHSV(trail[i].i, trail[i].hsv);
+        ledInterface->forceHSV(trail[i].i, trail[i].hsv);
     }
     ihsv_f trail_hsv = { curNode->led->index, on };
     trail.push_back(trail_hsv);
 
     if (xbox::getLeftThumbActive(P1)) {
-        ledInterface->setHSV(nextNode->led, rainbow);
+        ledInterface->forceHSV(nextNode->led, rainbow);
     }
     else {
         ledInterface->setRGB(nextNode->led, off);

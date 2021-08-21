@@ -18,6 +18,7 @@
 #include "Patterns/Snake.h"
 #include "Patterns/Fireworks.h"
 #include "Patterns/Fireflies.h"
+#include "Patterns/Pershing.h"
 
 Dome* dome;
 Shared* shared;
@@ -86,14 +87,13 @@ void runEngine() {
 	
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
-	
-	patterns.push_back(new Snake(shared));
-	patterns.push_back(new Fireflies(shared));
-	patterns.push_back(new TwinklyNight(shared));
+	patterns.push_back(new Pershing(shared));
+	//patterns.push_back(new Snake(shared));
+	//patterns.push_back(new Fireflies(shared));
+	//patterns.push_back(new TwinklyNight(shared));
 	patterns.push_back(new Fireworks(shared));
-	//patterns.push_back(new UsingEffects(shared));
-	patterns.push_back(new RainbowSweeps(shared));
-	patterns.push_back(new RGBPat(shared));
+	//patterns.push_back(new RainbowSweeps(shared));
+	//patterns.push_back(new RGBPat(shared));
 
 	Pattern* realPattern = patterns[0];
 	Pattern* simulatedPattern = patterns[0];
@@ -187,18 +187,29 @@ void runEngine() {
 				if (shared->bufferPipe[0] == 0) {
 					//The buffer is empty, this is just enter
 					//printf("Real = simulation (%s)\n",realPattern->name);
-					printf("Real = simulation\n");
+					
+					
 					if (real_pattern_i != sim_pattern_i) {
+						printf("Real = simulation\n");
+						realPattern->release();
+						realPattern = patterns[sim_pattern_i];
 						effectEngineReal->clear();
 						ledInterfaceReal->clear();
 						clearLEDs(true);
 						clearLEDs(true);
 						clearLEDs(true);
+						clearLEDs(true);
+						clearLEDs(true);
+						realPattern->ledInterface = ledInterfaceReal;
+						realPattern->effectEngine = effectEngineReal;
+						realPattern->init();
+						real_pattern_i = sim_pattern_i;
 
 					}
-					real_pattern_i = sim_pattern_i;
+					
 
-					realPattern = patterns[sim_pattern_i];
+					
+					
 					//TODO MAYBE ADD A SWAP BETWEEN REAL AND SIM EFFECT ENGINES
 					shared->viewReal = true;
 				}
@@ -219,7 +230,10 @@ void runEngine() {
 			if (shared->directionPipe != 0) {
 				sim_pattern_i += shared->directionPipe;
 				sim_pattern_i = negMod(sim_pattern_i, patterns_len);
+				simulatedPattern->release();
 				simulatedPattern = patterns[sim_pattern_i];
+				realPattern->ledInterface = ledInterfaceSim;
+				simulatedPattern->init();
 				effectEngineSim->clear();
 				shared->directionPipe = 0;
 				clearLEDs(false);

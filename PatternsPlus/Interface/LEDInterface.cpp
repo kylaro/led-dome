@@ -98,7 +98,9 @@ void LEDInterface::apply() {
         if (change->count != 0) {
             setLED(change->index, (change->rgb.r * 255.0 * scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
             change->count = 0;
+            change->locked = 0;
         }
+        change->locked = 0;
         
     }
     
@@ -179,6 +181,7 @@ void LEDInterface::clear() {
     for (int i = 0; i < MAX_LEDS; i++) {
         changesArray[i]->rgb = off;
         changesArray[i]->count = 0;
+        changesArray[i]->locked = 0;
     }
 }
 
@@ -186,24 +189,9 @@ void LEDInterface::setRGB(int index, rgb_f rgb) {
     rgb.r = sanitizeSV(rgb.r);
     rgb.g = sanitizeSV(rgb.g);
     rgb.b = sanitizeSV(rgb.b);
-    /*LEDChange* change = new LEDChange(index, rgb);
-    if (changes_map.find(index) != changes_map.end()) {
-        //If there is already an ledchange object here
-        changes_map[index]->push_back(change);
-    }
-    else {
-        std::vector<LEDChange*>* changeVector = new std::vector<LEDChange*>();
-        changeVector->push_back(change);
-        changes_map.insert({ index,changeVector });
-    }*/
+    
     changesArray[index]->assimilate(rgb);
-    //changesArray[index]->rgb = rgb;//need to actually call function to add it in but whatever for now;
-    //changesArray[index]->count++;
-    //if (!getDirtyMap(index)) {
-    //    setDirtyMap(index);
-    //    dirtyLEDs.push_back(index); //actually slowes it down to keep track of dirty leds vs doing them all
-    //}
-    //changes.push_back(new LEDChange(index, rgb));
+    
 
 }
 
@@ -258,4 +246,36 @@ rgb_f LEDInterface::HSVtoRGB(hsv_f hsv) {
     double B = (b + m);// * 255;
     rgb_f rgb = { R,G,B };
     return rgb;
+}
+
+
+
+
+
+
+
+void LEDInterface::forceRGB(int index, rgb_f rgb) {
+    rgb.r = sanitizeSV(rgb.r);
+    rgb.g = sanitizeSV(rgb.g);
+    rgb.b = sanitizeSV(rgb.b);
+
+    changesArray[index]->force(rgb);
+
+
+}
+
+void LEDInterface::forceRGB(LED* led, rgb_f rgb) {
+    forceRGB(led->index, rgb);
+}
+
+void LEDInterface::forceHSV(LED* led, hsv_f hsv) {
+    forceHSV(led->index, hsv);
+}
+
+void LEDInterface::forceHSV(int index, hsv_f hsv) {
+    hsv.h = sanitizeH(hsv.h);
+    hsv.s = sanitizeSV(hsv.s);
+    hsv.v = sanitizeSV(hsv.v);
+
+    forceRGB(index, HSVtoRGB(hsv));
 }

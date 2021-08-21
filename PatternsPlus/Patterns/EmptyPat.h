@@ -8,6 +8,8 @@ public:
 	using Pattern::Pattern;
 
 	void run(bool real);
+	void init();
+	void release();
 	char name[40] = "empty";
 };
 

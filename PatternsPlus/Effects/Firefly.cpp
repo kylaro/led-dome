@@ -16,8 +16,8 @@ void Firefly::init() {
 void Firefly::release() {
 	done = 1;
 	rgb_f off = { 0,0,0 };
-	for (irgb_f k : lights) {
-		LEDs->setRGB(k.i, off);
+	for (int k = startIndex; k < lights.size(); k++) {
+		LEDs->setRGB(lights[k].i, off);
 	}
 	lights.~vector();
 

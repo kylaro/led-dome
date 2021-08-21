@@ -8,6 +8,8 @@ public:
 	int getWattsEXP(rgb_t rgb);
 	double getWatts(rgb_f rgb);
 	void assimilate(rgb_f rgb);
+	void force(rgb_f rgb);
+	double locked = 0;
 	int index;
 	rgb_f rgb;
 	double watts;

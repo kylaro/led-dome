@@ -79,6 +79,7 @@ void HEXPulse::release() {
 		LEDs->setRGB(k.i, off);
 	}
 	xbox::vibrate(P1, 0);
+	xbox::vibrate(P2, 0);
 }
 void HEXPulse::run() {
 	
@@ -96,6 +97,7 @@ void HEXPulse::run() {
 	
 	double timescale = time / duration;// 1 second fade
 	xbox::vibrate(P1, 1-timescale);
+	xbox::vibrate(P2, 1 - timescale);
 	for (ihsv_f k : leds) {
 		k.hsv.v = 1-timescale;
 		k.hsv.s = timescale*8.0;

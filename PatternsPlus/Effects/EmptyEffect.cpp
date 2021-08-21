@@ -14,5 +14,6 @@ void EmptyEffect::run() {
 
 void EmptyEffect::release() {
 	done = 1;
+	rgb_f off = { 0,0,0 };
 	//turn off leds used...
 }

@@ -9,7 +9,7 @@ int Thumbstick::getActive() {
 }
 double Thumbstick::getAngle() {//-pi to pi
 	double angle = atan2(getY(), getX());
-	printf("%f\n",angle);
+	//printf("%f\n",angle);
 	return angle;
 }
 

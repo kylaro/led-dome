@@ -9,7 +9,12 @@ Pattern::Pattern( Shared * sharedObject ) {
 	this->mapping = sharedObject->mapping;
 	this->effectEngine = sharedObject->effectEngine;
 }
+void Pattern::init() {
 
+}
+void Pattern::release() {
+
+}
 /*
 std::thread Pattern::start() {
 	//std::thread pat(&Pattern::run, this);

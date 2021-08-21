@@ -33,12 +33,17 @@ public:
 	void setHSV(LED * led, hsv_f hsv);
 	void setHSV(int index, hsv_f hsv);
 
+	void forceRGB(LED* led, rgb_f rgb);
+	void forceRGB(int index, rgb_f rgb);
+	void forceHSV(LED* led, hsv_f hsv);
+	void forceHSV(int index, hsv_f hsv);
+
 	void clear();
 	bool usePowerMonitoring = false;
 	void apply();
 
 	std::vector<int> dirtyLEDs;
-	uint32_t dirtyMap[530];// more than enough to cover maxleds
+	uint32_t dirtyMap[530];// more than enough to cover maxleds (bits)
 
 
 	rgb_f HSVtoRGB(hsv_f hsv);
