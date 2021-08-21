@@ -77,6 +77,19 @@ double time(uint32_t period) // PERIOD IN MILLIS
 	return (double(micros % period)) / double(period);
 }
 
+double triangleD(double d) {
+	//period *= 1e3; // promote millis to micros
+	d = fmod(d, 1);
+	//auto now = high_resolution_clock::now();
+	//uint32_t micros = nowMicros() % period;
+	if (d <= .5) {
+		return 2 * d;
+	}
+	else {
+		d -= 0.5;
+		return (1 - d * 2);// / (double)period;
+	}
+}
 
 double triangle(uint32_t period) // period in millis
 {

@@ -181,6 +181,7 @@ namespace easy3d {
 			for (Strut* edge : myDome->struts) {
 				for (LED* led : edge->leds) {
 					if (led->confirmed == 0) {
+						//if(calibrat)
 						continue;//comment this out for calibration;
 					}
 					lboy = getLED(led->index, shared->viewReal);

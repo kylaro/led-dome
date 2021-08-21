@@ -228,6 +228,15 @@ namespace xbox {
 	}
 
 	//-1 is left, 0 is none, 1 is right
+	double getRightThumbY(int p) {
+		CXBOXController* Player = getP(p);
+		if (Player == NULL) {
+			return 0;
+		}
+		return Player->getRightThumbY();
+		//return 0;
+	}
+	//-1 is left, 0 is none, 1 is right
 	double getLeftThumbstickX(int p) {
 		CXBOXController* Player = getP(p);
 		if (Player == NULL) {

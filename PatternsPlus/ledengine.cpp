@@ -87,13 +87,14 @@ void runEngine() {
 	
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
+	
 	patterns.push_back(new Pershing(shared));
 	//patterns.push_back(new Snake(shared));
-	//patterns.push_back(new Fireflies(shared));
-	//patterns.push_back(new TwinklyNight(shared));
+	patterns.push_back(new Fireflies(shared));
+	patterns.push_back(new TwinklyNight(shared));
 	patterns.push_back(new Fireworks(shared));
-	//patterns.push_back(new RainbowSweeps(shared));
-	//patterns.push_back(new RGBPat(shared));
+	patterns.push_back(new RainbowSweeps(shared));
+	patterns.push_back(new RGBPat(shared));
 
 	Pattern* realPattern = patterns[0];
 	Pattern* simulatedPattern = patterns[0];
@@ -111,6 +112,19 @@ void runEngine() {
 	clearLEDs();
 	//std::thread ledthread(updateLEDsThread);
 	//ledthread.detach();
+
+	//REMOVE THIS START
+	/*Pattern* cal = new Calibration(shared);
+	shared->viewReal = false;
+	clearLEDs();
+	shared->clearBuffer();
+	shared->calibratingPipe = 1;
+	cal->run(true);
+	shared->calibratingPipe = 0;*/
+	//REMOVE THIS END
+
+
+
 	while (1) {
 		//PREPARE STATISTICS
 		count++;

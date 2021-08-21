@@ -1,9 +1,9 @@
-#ifndef EMPTYEFF_H
-#define EMPTYEFF_H
+#ifndef RGBEFF_H
+#define RGBEFF_H
 #include "Effect.h"
 
 
-class EmptyEffect : public Effect {
+class RGBEff : public Effect {
 public:
 	using Effect::Effect;
 
@@ -11,6 +11,9 @@ public:
 	void run();
 	void init();
 	void release();
+	void cleanup();
+	int enabled = 1;
+	int didfull = 0;
 };
 
 

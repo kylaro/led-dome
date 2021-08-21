@@ -5,6 +5,9 @@
 #include "../Effects/Firefly.h"
 #include "../Effects/Blink.h"
 #include "../Effects/Firework.h"
+#include "../Effects/Sweeps.h"
+#include "../Effects/RainbowFirefly.h"
+#include "../Effects/RGBEff.h"
 class Pershing : public Pattern {
 public:
 	using Pattern::Pattern;
@@ -14,9 +17,12 @@ public:
 	void release();
 	char name[40] = "empty";
 
+	RGBEff* rgbeff = NULL;
+	Sweeps* fullRainbow = NULL;
 	SnakeEffect * snake1;
 	SnakeEffect* snake2;
 
+	std::vector<RainbowFirefly* > rainbowflies;
 	std::vector<Firefly* > fireflies;
 	double rumble1 = 0;
 	double rumble2 = 0;

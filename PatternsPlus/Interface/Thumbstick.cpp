@@ -38,3 +38,16 @@ double Thumbstick::getY() {
 	}
 	return niceY;
 }
+
+double Thumbstick::getRightY() {
+	XINPUT_STATE state = controller->GetState();
+	XINPUT_GAMEPAD gamepad = state.Gamepad;
+	int rawY = gamepad.sThumbRY + 32768;
+	double niceY = rawY / 65535.0;// now is 0 to 1;
+	niceY -= 0.5;
+	niceY *= 2;// i wonder how much precision we are losing doing all this..
+	if (fabs(niceY) < 0.001) {
+		niceY = 0;
+	}
+	return niceY;
+}

@@ -35,6 +35,7 @@ public:
     int getButtonPress(int button);
     double getLeftThumbAngle();
     double getLeftThumbX();
+    double getRightThumbY();
     int getLeftThumbActive();
 };
 

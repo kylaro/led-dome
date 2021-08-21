@@ -39,6 +39,7 @@ namespace xbox {
 
 	int getRightThumbPress(int p);
 	int getRightThumbHeld(int p);
+	double getRightThumbY(int p);
 
 	int getLeftShoulderPress(int p);
 	int getLeftShoulderHeld(int p);

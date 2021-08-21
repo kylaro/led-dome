@@ -229,6 +229,58 @@ LLnode* LLnode::getNextHighest() {
 	
        	return nextHighest[rand()%nextHighest.size()];
 }
+
+
+
+LLnode* LLnode::getNextLowest() {
+	if (nextLowestOnStrut != NULL) {
+		return nextLowestOnStrut;
+	}
+	if (nextLowest.size() > 0) {
+		return nextLowest[rand() % nextLowest.size()];
+	}
+	
+	LLnode* lowest = this;
+	double lowest_y = lowest->led->y;
+	
+
+	for (LLnode* next : nextNodes) {
+		if (next->led->y < lowest_y) {
+			nextLowest.push_back(next);
+			//highest = next;
+			//highest_y = next->led->y;
+		}
+	}
+	for (LLnode* next : prevNodes) {
+		if (next->led->y < lowest_y) {
+			nextLowest.push_back(next);
+			//highest = next;
+			//highest_y = next->led->y;
+		}
+	}
+	for (LLnode* next : neighbors) {
+		if (next->led->y < this->node->y) {
+			nextLowest.push_back(next);
+		}
+		if (next->led->y < lowest_y) {//ben
+			nextLowest.push_back(next);
+			//uncommment this for correctness
+		}
+	}
+	
+	for (LLnode* llnode : nextLowest) {
+		if (llnode->myStrut == myStrut) {
+			nextLowestOnStrut = llnode;
+			return llnode;
+		}
+	}
+	if (nextLowest.size() == 0) {
+		return NULL;
+	}
+	return nextLowest[rand() % nextLowest.size()];
+}
+
+
 LLnode* LLnode::getNeighborOrThis() {
 	if (neighbors.size() > 0) {
 		if (rand() % (neighbors.size() + 1) == 0) {

@@ -3,6 +3,7 @@
 
 #include "positioning.h"
 
+double distance(xyz_f a, xyz_f b);
 double magnitude(xyz_f xyz);
 void normalize(xyz_f* xyz);
 xyz_f subtract(xyz_f xyz1, xyz_f xyz2);

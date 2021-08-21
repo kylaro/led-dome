@@ -49,6 +49,9 @@ double CXBOXController::getLeftThumbAngle() {
 double CXBOXController::getLeftThumbX() {
     return this->leftStick->getX();
 }
+double CXBOXController::getRightThumbY() {
+    return this->leftStick->getRightY();
+}
 
 int CXBOXController::getLeftThumbActive() {
     return this->leftStick->getActive();

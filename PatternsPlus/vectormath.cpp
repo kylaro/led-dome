@@ -1,6 +1,9 @@
 #include "vectormath.h"
 #include <cmath>
 
+double distance(xyz_f a, xyz_f b) {
+	return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}
 double magnitude(xyz_f xyz) {
 	if (xyz.x + xyz.y + xyz.z == 0) {
 		return 0;

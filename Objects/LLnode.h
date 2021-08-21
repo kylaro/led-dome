@@ -30,6 +30,7 @@ public:
 	LLnode* strutPrev();
 	LLnode* strutNext();
 	LLnode* getNextHighest();
+	LLnode* getNextLowest();
 	LLnode* getNeighbor();
 	LLnode* getNeighborOrThis();
 	LLnode* getNeighborAngle(double angle);
@@ -37,6 +38,8 @@ public:
 	
 	std::vector<LLnode*> nextHighest;
 	LLnode* nextHighestOnStrut = NULL;
+	std::vector<LLnode*> nextLowest;
+	LLnode* nextLowestOnStrut = NULL;
 	void addNeighbor(LLnode* nb);
 	LLnode* myStrutNext = NULL;
 	LLnode* myStrutPrev = NULL;

@@ -14,6 +14,7 @@ public:
 	CXBOXController* controller;
 	double getX();
 	double getY();
+	double getRightY();
 	double getAngle();//returns angle in radians, 0 to 2pi;
 private:
 	int released = 1;

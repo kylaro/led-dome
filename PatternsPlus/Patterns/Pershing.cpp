@@ -4,6 +4,8 @@
 #include "../Interface/XBOX.h"
 #include "../Effects/SnakeFirework.h"
 
+#include "../Effects/Raindrop.h"
+
 #include "../vectormath.h"
 
 void Pershing::init() {
@@ -11,6 +13,14 @@ void Pershing::init() {
 	snake2 = new SnakeEffect(ledInterface, shared->mapping);
 	snake1->player = P1;
 	snake2->player = P2;
+	fullRainbow = new Sweeps(ledInterface, shared->mapping);
+	fullRainbow->mode = fullRainbow->rainbow;
+	fullRainbow->enabled = 0;
+
+	rgbeff = new RGBEff(ledInterface, shared->mapping);
+	rgbeff->enabled = 0;
+	effectEngine->apply(fullRainbow);
+	effectEngine->apply(rgbeff);
 	//snake1->init();
 	//snake2->init();
 	//effectEngine->apply(snake1);
@@ -76,6 +86,8 @@ void Pershing::run(bool real) {
 		init();
 		initted = 1;
 	}
+	
+
 	int snake1_alive = snake1->initted;
 	int snake2_alive = snake2->initted;
 	//Check if snakes ate little bugs...
@@ -100,10 +112,10 @@ void Pershing::run(bool real) {
 					
 					fly->release();
 					if (i > snake1_size - 5) {
-						if (snake1->length < 10) {
+						if (snake1->length < 15) {
 							snake1->feed(3);
 						}
-						else if (snake1->length < 100) {
+						else if (snake1->length < 150) {
 							snake1->feed(2);
 						}
 						else {
@@ -125,10 +137,10 @@ void Pershing::run(bool real) {
 					
 					fly->release();
 					if (i > snake2_size - 5) {
-						if (snake2->length < 10) {
+						if (snake2->length < 15) {
 							snake2->feed(3);
 						}
-						else if (snake2->length < 100) {
+						else if (snake2->length < 150) {
 							snake2->feed(2);
 						}
 						else {
@@ -195,6 +207,10 @@ void Pershing::run(bool real) {
 					//Then let's get snake2's 2D coordinates
 					xyz_f snake2_p1 = snake2->pastNodes[i]->led->xyz;
 					xyz_f snake2_p2 = snake2->pastNodes[i - 1]->led->xyz;
+					if (distance(snake1_p1, snake2_p1) > 100) {
+						//the nodes are too far apart
+						continue;
+					}
 					xy_f snake2_xy1 = projectPoint(snake1_node_xyz, snake2_p1);
 					xy_f snake2_xy2 = projectPoint(snake1_node_xyz, snake2_p2);
 					//Then run the line intersection between them
@@ -245,7 +261,7 @@ void Pershing::run(bool real) {
 	
 	int otherStuff = 0;
 	if (xbox::getYHeld(P1) || xbox::getYHeld(P2)) {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 16.0*(xbox::getRightThumbY(P1)+1)+1; i++) {
 			Shimmer* shim = new Shimmer(ledInterface, shared->mapping);
 			shim->duration = 100 + rand() % 2000;
 			effectEngine->apply(shim);
@@ -254,19 +270,95 @@ void Pershing::run(bool real) {
 	}
 
 	if (xbox::getXHeld(P1) || xbox::getXHeld(P2)) {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 22.0 * (xbox::getRightThumbY(P1) + 1) + 1; i++) {
 			Blink* blink = new Blink(ledInterface, shared->mapping);
 			blink->duration = 1000 + rand() % 200;
 			effectEngine->apply(blink);
 		}
 		otherStuff = 1;
 	}
+
+	if (xbox::getBHeld(P1) || xbox::getBHeld(P2)) {
+		for (int i = 0; i < 4.0 * (xbox::getRightThumbY(P1) + 1) + 1; i++) {
+			effectEngine->apply(new Raindrop(ledInterface, shared->mapping));
+		}
+		snake1->hue = 0;
+		otherStuff = 1;
+	}
 	if (otherStuff == 0) {
 		Firefly* littlebug = new Firefly(ledInterface, shared->mapping);
 		effectEngine->apply(littlebug);
 		fireflies.push_back(littlebug);
+		snake1->hue =  .66;
+		
+		
 	}
 	
+	snake1_alive = snake1->initted;
+	snake2_alive = snake2->initted;
+
+	for (RainbowFirefly * fly : rainbowflies) {
+		if (fly->done == 1) {
+			continue;
+		}
+		int fly_i = fly->curNode->led->index;
+		//i could have a list of snakes but whatever
+
+		if (snake1_alive) {
+			int snake1_i = snake1->curNode->led->index;
+			for (int i = 0; i < snake1_size; i++) {
+
+				snake1_i = snake1->pastNodes[i]->led->index;
+				if (fly_i == snake1_i) {
+
+					fly->release();
+					if (i > snake1_size - 5) {
+						if (snake1->length < 15) {
+							snake1->feed(20);
+						}
+						else if (snake1->length < 150) {
+							snake1->feed(40);
+						}
+						else {
+							snake1->feed(60);
+						}
+
+						vibrate(P1, 1, 0.1);
+					}
+				}
+			}
+		}
+
+		if (snake2_alive) {
+			int snake2_i = snake2->curNode->led->index;
+			for (int i = 0; i < snake2_size; i++) {
+
+				snake2_i = snake2->pastNodes[i]->led->index;
+				if (fly_i == snake2_i) {
+
+					fly->release();
+					if (i > snake2_size - 5) {
+						if (snake2->length < 15) {
+							snake2->feed(20);
+						}
+						else if (snake2->length < 150) {
+							snake2->feed(40);
+						}
+						else {
+							snake2->feed(60);
+						}
+						vibrate(P2, 1, 0.1);
+					}
+
+				}
+			}
+		}
+	}
+	if (rand() % 80 == 0) {
+		RainbowFirefly* littlebug = new RainbowFirefly(ledInterface, shared->mapping);
+		effectEngine->apply(littlebug);
+		rainbowflies.push_back(littlebug);
+	}
 
 	/*
 	int p1_press = xbox::getBPress(P1);
@@ -305,6 +397,48 @@ void Pershing::run(bool real) {
 		init();
 	}
 
+	int shouldersHeldP1 = (xbox::getLeftShoulderHeld(P1) && xbox::getRightShoulderHeld(P1));
+	int shouldersHeldP2 = (xbox::getLeftShoulderHeld(P2) && xbox::getRightShoulderHeld(P2));
+
+	if ((shouldersHeldP1 && xbox::getRightThumbHeld(P1)) || (shouldersHeldP2 && xbox::getRightThumbHeld(P2))) {
+		fullRainbow->enabled = 1;
+		//printf("hello");
+	}
+	else {
+		fullRainbow->enabled = 0;
+	}
+
+	if ((shouldersHeldP1 && xbox::getLeftThumbHeld(P1)) || (shouldersHeldP2 && xbox::getLeftThumbHeld(P2))) {
+		rgbeff->enabled = 1;
+		//printf("hello");
+	}
+	else {
+		rgbeff->enabled = 0;
+	}
+
+	if ((shouldersHeldP1 && xbox::getDpadLeftPress(P1)) || (shouldersHeldP2 && xbox::getDpadLeftPress(P2))){
+		Sweeps* sweep = new Sweeps(ledInterface, shared->mapping);
+		sweep->mode = sweep->left_sweep;
+		effectEngine->apply(sweep);
+	}
+
+	if ((shouldersHeldP1 && xbox::getDpadRightPress(P1)) || (shouldersHeldP2 && xbox::getDpadRightPress(P2))) {
+		Sweeps* sweep = new Sweeps(ledInterface, shared->mapping);
+		sweep->mode = sweep->right_sweep;
+		effectEngine->apply(sweep);
+	}
+
+	if ((shouldersHeldP1 && xbox::getDpadUpPress(P1)) || (shouldersHeldP2 && xbox::getDpadUpPress(P2))) {
+		Sweeps* sweep = new Sweeps(ledInterface, shared->mapping);
+		sweep->mode = sweep->up_sweep;
+		effectEngine->apply(sweep);
+	}
+
+	if ((shouldersHeldP1 && xbox::getDpadDownPress(P1)) || (shouldersHeldP2 && xbox::getDpadDownPress(P2))) {
+		Sweeps* sweep = new Sweeps(ledInterface, shared->mapping);
+		sweep->mode = sweep->down_sweep;
+		effectEngine->apply(sweep);
+	}
 }
 
 
@@ -353,31 +487,32 @@ void Pershing::vibrate(int p, int toggle, double intensity) {
 	else if (p == P2) {
 		if (toggle) {
 
-		}if (rumble2 > 0) {
-			xbox::vibrate(P2, 1);
+			if (rumble1 > 0) {
+				xbox::vibrate(P2, 1);
+			}
+			else {
+				if (rumble1 > -1)
+					xbox::vibrate(P2, 0);
+			}
+
+
+			rumble2 -= intensity;
+
 		}
 		else {
-			if (rumble2 > -1)
+
+			if (rumble2 > 0 && rumble2 < 1) {
+				xbox::vibrate(P2, 1);
+				rumble2 -= 0.2;
+			}
+			else {
+				rumble2 = 1;
+			}
+			if (rumble2 == 1) {
 				xbox::vibrate(P2, 0);
-		}
+				rumble2 = 1.05;
+			}
 
-
-		rumble2 -= 0.2;
-	}
-	else {
-
-
-		//
-		if (rumble2 > 0 && rumble2 < 1) {
-			xbox::vibrate(P2, 1);
-			rumble2 -= 0.2;
-		}
-		else {
-			rumble2 = 1;
-		}
-		if (rumble2 == 1) {
-			xbox::vibrate(P2, 0);
-			rumble2 = 1.05;
 		}
 
 	}

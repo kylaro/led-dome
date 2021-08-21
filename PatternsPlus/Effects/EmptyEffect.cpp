@@ -1,7 +1,7 @@
 #include "EmptyEffect.h"
 
 void EmptyEffect::init() {
-
+	startTime = nowMillis();
 
 	initted = 1;
 }
