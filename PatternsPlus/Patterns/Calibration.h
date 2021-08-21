@@ -13,6 +13,7 @@ public:
 
 	void run(bool real);
 private:
+	void help();
 	void handleBuffer();
 	int previousEdge = 0;
 	int selectedEdge = 0;

@@ -1,8 +1,34 @@
 #include "helpers.h"
 #include <chrono>
 #include "../Networking/ledcontrol.h"
-
+#include <string>
+#include <fstream>
 uint32_t offset_micros = 0;
+
+using namespace std;
+void loadCalibration(Dome* dome) {
+	ifstream cal_file_in("ledcal69.txt");
+	string line;
+	uint32_t edge, led, confirmed;
+	if (cal_file_in.is_open()) {
+		printf("Loading cal...\n");
+		//while (getline(cal_file_in, line)) {
+		//	printf("%s",line);
+		//}
+		while (cal_file_in >> edge >> led >> confirmed) {
+			//printf("%d %d %d\n", edge, led, confirmed);
+			dome->struts[edge]->startLED = led;
+			dome->struts[edge]->confirmed = confirmed;
+		}
+
+
+		cal_file_in.close();
+		printf("Finished Loading Calibration! :)\n");
+	}
+	else {
+		printf("CALERROR: Could not open ledcal69.txt from same directory as it saves in\n");
+	}
+}
 
 uint32_t nowNanos() {
 	auto now = std::chrono::high_resolution_clock::now();

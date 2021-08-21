@@ -1,19 +1,49 @@
 #include "Calibration.h"
 #include "../helpers.h""
 #include <string>
-
+#include <fstream>
 
 uint32_t ledbuffer[MAX_LEDS]; // just keep track of a color value for each, not anything fancy
 
 using namespace std;
+ofstream cal_file;
+ifstream cal_file_in;
+
+void Calibration::help() {
+	printf("Welcome to calibration\n");
+	printf(" * RAINBOW\tis the start LED, Blue along the strut selection, RED is end LED\n");
+	printf(" * Solid green\t is an LED that already belongs to an edge and has been confirmed\n");
+	printf(" * Purple glow\t are the leds mapped to the selected strut\n");
+	printf(" * Faint orange\tis an LED that is mapped to a strut, but has not been confirmed\n");
+	printf(" * dim RED\tis an LED that is mappable, but is not yet mapped\n");
+	printf("\nYour goal is to match the Blue strut IRL with the blue strut on the screen and then press enter\n");
+	printf("Use arrow keys and enter, you can always redo things it is very forgiving\n");
+	printf("When you are done please type save, this can be done to save progress along the way too\n");
+	printf("If you want to leave you may type quit\n\n\n");
+}
+
 void Calibration::handleBuffer() {
 	string buf = string(shared->bufferPipe);
-	printf("calibration-> %s\n", shared->bufferPipe);
+	
+	printf("calibration->%s\n", shared->bufferPipe);
 	if (buf == "load") {
+		loadCalibration(dome);
+		
+		
 
 	}
 	else if (buf == "save") {
-
+		cal_file.open("ledcal69.txt");
+		for (int e = 0; e < dome->struts.size(); e++) {
+			cal_file << e;
+			cal_file << ' ';
+			cal_file << dome->struts[e]->startLED;
+			cal_file << ' ';
+			cal_file << dome->struts[e]->confirmed;
+			cal_file << '\n';
+		}
+		cal_file.close();
+		printf("Saved! ledcal69.txt\n");
 	}
 	else if (buf == "quit") {
 		quit = true; // exit main loop
@@ -34,6 +64,9 @@ void Calibration::handleBuffer() {
 		shared->calibratingPipe ^= 1;//toggle it
 		shared->viewReal ^= 1;
 	}
+	else if (buf == "help") {
+		help();
+	}
 	shared->clearBuffer();
 }
 
@@ -41,11 +74,7 @@ void Calibration::bufferLED(int i, uint32_t color) {
 	ledbuffer[i] = color;
 }
 void Calibration::run(bool real) {
-	printf("Welcome to calibration\n");
-	printf("RAINBOW is the start LED, Blue along the strut selection, RED is end LED\n");
-	printf("Solid green is an LED that already belongs to an edge and has been confirmed\n");
-	printf("Faint orange is an LED that is mapped, but has not been confirmed\n");
-	printf("dim RED is an LED that is mappable, but is not yet mapped\n");
+	help();
 	//AH yes, here it is, calibration
 	//we are above the law in this pattern :) 
 	//Mostly because this will not be included in the pattern vector, it will be triggered once and have full control upon proper commands
@@ -112,7 +141,7 @@ void Calibration::run(bool real) {
 				shared->keyPressedPipe = 0;
 				handleBuffer();
 			}
-			if (keyFlag < 1 && (shared->keyPressedPipe || shared->keyHeldPipe)) {
+			if (keyFlag < 2 && (shared->keyPressedPipe || shared->keyHeldPipe)) {
 				int key = shared->keyHeldPipe > 0 ? shared->keyHeldPipe : shared->keyPressedPipe;
 				switch (key) {
 				case 262: // RIGHT ARROW

@@ -29,6 +29,7 @@ void init() {
 	initLEDController();
 
 	shared->mapping = new Mapping(dome);
+	loadCalibration(dome);
 }
 
 
