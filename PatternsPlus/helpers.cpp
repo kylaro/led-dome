@@ -47,12 +47,29 @@ double time(uint32_t period) // PERIOD IN MILLIS
 	return (double(micros % period)) / double(period);
 }
 
+
+double triangle(uint32_t period) // period in millis
+{
+	period *= 1e3; // promote millis to micros
+
+	auto now = high_resolution_clock::now();
+	uint32_t micros = nowMicros() % period;
+	if (micros <= period / 2) {
+		return 2 * micros / (double)period ;
+	}
+	else {
+		return 2 * (period - micros) / (double) period;
+	} // idk what the heck i did here sorry lol
+	//std::cout << (nanos / period) << std::endl;
+	//return (double(micros % period)) / double(period);
+}
+
 int negMod(int x, int mod) {
 	if (x >= 0) {
 		return x % mod;
 	}
 	//otherwise it is negative
-	return (mod - x) % mod; // 5 % 5 = 0, -1 % 5 = 4, -7 % 5 = 2? idk
+	return (mod + x) % mod; // 5 % 5 = 0, -1 % 5 = 4, -7 % 5 = 2? idk
 }
 
 uint32_t sharpenRGB(uint32_t rgb, uint32_t thresh) {
@@ -86,6 +103,17 @@ uint32_t getB(uint32_t rgb) {
 
 uint32_t assembleRGB(uint32_t r, uint32_t g, uint32_t b) {
 	return (r << 16) | (g << 8) | b;
+}
+
+uint32_t rgbScale(uint32_t rgb, double scale) {
+	if (scale == 0) {
+		//printf("rgbdiv0");
+		return rgb;
+	}
+	uint32_t r = getR(rgb) * scale;
+	uint32_t g = getG(rgb) * scale;
+	uint32_t b = getB(rgb) * scale;
+	return assembleRGB(r, g, b);
 }
 
 uint32_t rgbDiv(uint32_t rgb, uint8_t scale) {

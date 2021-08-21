@@ -34,7 +34,7 @@ void RainbowSweeps:: run(bool real) {
 		mode = negMod(mode, 5);
 	}
 
-	i %= dome->totalLEDs;
+	
 	//k += i;
 	k++;
 

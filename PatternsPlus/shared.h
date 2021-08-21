@@ -17,15 +17,16 @@ public:
 	char bufferPipe[BUFFER_LEN];
 	int directionPipe = 0; // -1 for back, 0 for none, 1 for forward
 	bool viewReal = true;
-
+	int keyHeldPipe = 0;
 	Mapping* mapping;
 	Dome* dome;
+	
 
 	void clearBuffer();
 	//inputs to viewer:
 	//maybe some kind of filter or something? idk exactly what will be input yet
-
-
+	int calibratingPipe = 0;
+	int selectedEdgePipe = 0;
 	//If there are EVER any problems with threads, please just add these 2 functions and put them around all modifications to this object
 	//lock()   //compare and add instruction? 
 	//unlock() 

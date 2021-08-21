@@ -5,6 +5,7 @@
 #include <easy3d/core/point_cloud.h>
 #include <easy3d/renderer/drawable_points.h>
 #include "../Networking/ledcontrol.h"
+#include "../PatternsPlus/helpers.h"
 #include <chrono>
 namespace easy3d {
 
@@ -39,7 +40,7 @@ namespace easy3d {
 	int buffer_i = 0;
 
 	void DomeViewer::submitBuffer() {
-		printf("->\n%s\n", shared->bufferPipe);
+		printf("->\n", shared->bufferPipe);
 		shared->submitPipe = 1;
 		shared->keyPressedPipe = 0; // we are treating submission as not a keypress..
 		buffer_i = 0;
@@ -85,6 +86,14 @@ namespace easy3d {
 			
 			shared->keyPressedPipe = key;
 		}
+		else if (action == 2) {
+			//this is when we are holding down a key;
+			shared->keyHeldPipe = key;
+		}
+		else if (action == 0) {
+			//this is when we release a key
+			shared->keyHeldPipe = 0;
+		}
 		return false;
 	}
 
@@ -100,41 +109,6 @@ namespace easy3d {
 			}
 		}
 
-		/*for (Strut* edge : myDome->struts) { //Uses just edges 
-			Node* from = edge->startNode;
-			Node* to = edge->endNode;
-			for (float x = 0; x < 1.0f; x += 0.01)//This needs to actually make LEDs not just dots lol
-			{
-				float new_x = from->x + (to->x - from->x) * x;
-				float new_y = from->y + (to->y - from->y) * x;
-				float new_z = from->z + (to->z - from->z) * x;
-				points.push_back(easy3d::vec3(new_x, new_y, new_z));
-				colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1- edge->letter / 4.0f, edge->letter/4.0f));
-			}
-		}*/
-		/*
-		for (Node* node : myDome->nodes) {
-			for (Node* neighbor : node->neighborNodes) {
-				if (neighbor == NULL) {
-					continue;
-				}
-				for (float x = 0; x < 1.0f; x += 0.01)//This needs to actually make LEDs not just dots lol
-				{
-					float new_x = neighbor->x + (node->x - neighbor->x)* x;
-					float new_y = neighbor->y + (node->y - neighbor->y) * x;
-					float new_z = neighbor->z + (node->z - neighbor->z) * x;
-					points.push_back(easy3d::vec3(new_x, new_y, new_z));
-					colors.push_back(easy3d::vec3(0, 0, 1));
-				}
-				
-			}
-			//std::cout << node->x << " " << node->y << " " << node->z << std::endl;
-			points.push_back(easy3d::vec3(node->x, node->y, node->z));
-			colors.push_back(easy3d::vec3(node->x / 5.0f, node->y / 5.0f, node->z / 5.0f));
-		}*/
-
-		//DomeViewer viewer("Hello");
-		//viewer.tickfunc = ledcalcs;
 
 		drawable = new PointsDrawable("leds");
 
@@ -156,13 +130,49 @@ namespace easy3d {
 		auto now = std::chrono::high_resolution_clock::now();
 		uint32_t beginNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
 		colors.clear();
-		for (Strut* edge : myDome->struts) {
-			for (LED* led : edge->leds) {
-				//points.push_back(easy3d::vec3(led->x, led->y, led->z));
-				//colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1 - edge->letter / 4.0f, edge->letter / 4.0f));
-				colors.push_back(easy3d::vec3(getLED(led->index, shared->viewReal)->r / 256.0f, getLED(led->index, shared->viewReal)->g / 256.0f, getLED(led->index, shared->viewReal)->b / 256.0f));
+		
+		if (shared->calibratingPipe) {
+
+			for (int e = 0; e < myDome->struts.size(); e++) {
+				Strut* edge = myDome->struts[e];
+				
+				if (e == shared->selectedEdgePipe) {
+					colors.push_back(easy3d::vec3(0, 1, 0));//start pixel is green;
+					for (int i = 1; i < edge->numLEDs - 1; i++) {
+						colors.push_back(easy3d::vec3(0,0,1));
+					}
+					colors.push_back(easy3d::vec3(1, 0, 0));
+				}
+				else {
+					if (edge->confirmed) {
+						for (int i = 0; i < edge->numLEDs; i++) {
+							colors.push_back(easy3d::vec3(0, 0.5, 0));
+						}
+					}
+					else {
+						for (int i = 0; i < edge->numLEDs; i++) {
+							colors.push_back(easy3d::vec3(0, 0, 0));
+						}
+						
+					}
+					
+				}
+				
+				
+
 			}
 		}
+		else {
+			//In here is normal drawing
+			for (Strut* edge : myDome->struts) {
+				for (LED* led : edge->leds) {
+					//points.push_back(easy3d::vec3(led->x, led->y, led->z));
+					//colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1 - edge->letter / 4.0f, edge->letter / 4.0f));
+					colors.push_back(easy3d::vec3(getLED(led->index, shared->viewReal)->r / 256.0f, getLED(led->index, shared->viewReal)->g / 256.0f, getLED(led->index, shared->viewReal)->b / 256.0f));
+				}
+			}
+		}
+		
 		now = std::chrono::high_resolution_clock::now();
 		uint32_t endNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
 		uint32_t elapsed = endNanos - beginNanos;

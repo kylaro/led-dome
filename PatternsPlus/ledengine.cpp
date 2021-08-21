@@ -7,6 +7,7 @@
 #include "pattern.h"
 #include "Patterns/RainbowSweeps.h"
 #include "Patterns/RGB.h"
+#include "Patterns/Calibration.h"
 #include <signal.h>
 #include <string>
 
@@ -18,6 +19,7 @@ uint32_t framerate_nanos = (1 / ((float)FRAME_RATE)) * 1e9;
 uint32_t framerate_micros = (1 / ((float)FRAME_RATE)) * 1e6;
 uint32_t framerate_millis = (1 / ((float)FRAME_RATE)) * 1e3;
 double freetime_avg = -1;
+double effectiveFPS = FRAME_RATE;
 void giveEngineShared(Shared* sharedObject) {
 	shared = sharedObject;
 	dome = shared->dome;
@@ -36,8 +38,18 @@ void handleBuffer(char * buffer) {
 	if (buf == "fps") {
 		double maxfps = (1e6)/(1 - freetime_avg)*(framerate_micros);
 		printf("FreetimeAVG = %f\n", freetime_avg);
-		//printf("maxFPS = %f\n", maxfps);
+		printf("real FPS = %f\n", effectiveFPS);
+	}
+	else if (buf == "calibrate" || buf == "calibration" || buf == "mapping") {
+		printf("Beginning Calibration...\n");
 
+		Pattern* cal = new Calibration(shared);
+		shared->viewReal = false;
+		clearLEDs();
+		shared->clearBuffer();
+		shared->calibratingPipe = 1;
+		cal->run(true);
+		shared->calibratingPipe = 0;
 	}
 }
 
@@ -59,14 +71,21 @@ void runEngine() {
 	int patterns_len = patterns.size();
 	
 	uint32_t beginMicros = nowMicros();
+	uint32_t lastbeginMicros = nowMicros();
 	uint32_t test = 0;
 	
 	uint32_t elapsed = 0;
 	double freetime = 0;
+
+	
 	
 	while (1) {
 		count++;
+		
 		beginMicros = nowMicros();
+		elapsed = beginMicros - lastbeginMicros;
+		effectiveFPS = 1e6 / (double)elapsed;//(effectiveFPS * 19 + (1e6 / elapsed)) / 20.0;... 1 second / time for 1 frame
+		lastbeginMicros = beginMicros;
 		if (real_pattern_i == sim_pattern_i) {
 			realPattern->run(true);
 			shared->viewReal = true;
@@ -82,13 +101,14 @@ void runEngine() {
 	
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
 		
-		if (freetime < 0.2) {
-			printf("Warning, free time between patterns is very low at: %f out of 1\n", freetime);
-			printf("FreetimeAVG = %f\n", freetime_avg);
-		}
 		if (freetime_avg == -1) {
 			freetime_avg = freetime;
 		}
+		if (freetime_avg < 0.2) {
+			printf("Warning, free time between patterns is very low at: %f out of 1\n", freetime);
+			printf("FreetimeAVG = %f\n", freetime_avg);
+		}
+		
 		else {
 			freetime_avg = (freetime_avg * 9 + freetime) / 10.0; // keep track of average freetime
 		}

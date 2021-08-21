@@ -9,10 +9,10 @@
 #define NUM_UNIVERSES 97 // This is the max number of universes for 16384 pixels
 #define LEDS_PER_UNIVERSE 170
 
-#define MAX_LEDS 16384
+
 led_t leds[MAX_LEDS];
 led_t leds_sim[MAX_LEDS];
-
+led_t ledbuffer[MAX_LEDS];
 
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue) {
     return ((red) << 16) | ((green) << 8) | (blue);
@@ -153,9 +153,19 @@ void updateLEDs() {
                 uint16_t channel = getChannel(uni_led);
 
                 uint32_t led = ledFromUniChan(uni, channel); // todo could also just use uni_led lol
-                packet.dmp.prop_val[channel] = leds[led].r / BRIGHTNESS_DIVIDE;
-                packet.dmp.prop_val[channel + 1] = leds[led].g / BRIGHTNESS_DIVIDE;
-                packet.dmp.prop_val[channel + 2] = leds[led].b / BRIGHTNESS_DIVIDE;
+                //if (leds[led].aZ == 0) {
+                    packet.dmp.prop_val[channel] = leds[led].r / BRIGHTNESS_DIVIDE;
+                    packet.dmp.prop_val[channel + 1] = leds[led].g / BRIGHTNESS_DIVIDE;
+                    packet.dmp.prop_val[channel + 2] = leds[led].b / BRIGHTNESS_DIVIDE;
+                //}
+               // else {
+                //    packet.dmp.prop_val[channel] = leds[led].r / leds[led].aZ;
+                //    packet.dmp.prop_val[channel + 1] = leds[led].g / leds[led].aZ;
+                //    packet.dmp.prop_val[channel + 2] = leds[led].b / leds[led].aZ;
+                 //   leds[led].aZ = 0;
+                //}
+                
+                
 
             }
 

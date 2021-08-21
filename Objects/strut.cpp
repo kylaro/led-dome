@@ -35,3 +35,14 @@ void Strut::generateLEDs(int start, int num) {
 		leds.push_back(newLED);
 	}
 }
+
+
+void Strut::setStartLED(int start) {
+	startLED = start;
+	endLED = start + numLEDs;
+	for (int i = 0; i < numLEDs; i++) {
+		leds[i]->index = start + i;
+	}
+
+
+}

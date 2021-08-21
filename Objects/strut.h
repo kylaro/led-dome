@@ -13,6 +13,7 @@ public:
 	Strut();
 	Strut(Node * a, Node * b, int letter, int index);
 	void generateLEDs(int start, int num);
+	void setStartLED(int start);
 	//For now, let's have the paradigm be starting LED, and NUMBER of LED
 	//this way we just adjust start, and NUM should be constant based on strut A B C or D
 	int startLED;
@@ -25,6 +26,8 @@ public:
 	Node* endNode;
 	int letter;
 	int index;
+	
+	int confirmed = 0; //calibrated?
 };
 
 #endif
