@@ -1,0 +1,1061 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "LEDControl69/LEDControl69.exe"
+		},
+		{
+			"path" : "LEDControl69/LEDControl69.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries"
+		],
+		"files" : 
+		[
+			"LEDControl69/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 7,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 11,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_BACKTRACE=0"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_BACKTRACE_SYMBOL=1"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_BFD=0"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_DW=0"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_DWARF=0"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_LIBUNWIND=0"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "BACKWARD_HAS_UNWIND=1"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "ELPP_DISABLE_DEFAULT_CRASH_HANDLING"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "ELPP_FEATURE_ALL"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "ELPP_NO_DEFAULT_LOG_FILE"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "ELPP_STL_LOGGING"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "ELPP_THREAD_SAFE"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "GLEW_NO_GLU"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "GLEW_STATIC"
+				},
+				{
+					"backtrace" : 2,
+					"define" : "NOMINMAX"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "C:/Users/kylar/Documents/Easy3D-master"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "C:/Users/kylar/Documents/Easy3D-master/3rd_party/glew/include"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "C:/Users/kylar/Documents/Easy3D-master/3rd_party/glfw/include"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0,
+				3,
+				5,
+				7,
+				9,
+				11,
+				13,
+				16,
+				18,
+				19,
+				21,
+				24,
+				25,
+				27,
+				30,
+				31,
+				34,
+				35,
+				37,
+				39,
+				41,
+				43,
+				45,
+				47,
+				49,
+				51,
+				53,
+				55,
+				57,
+				59,
+				62,
+				64,
+				66,
+				68,
+				71,
+				73,
+				75,
+				77,
+				79,
+				81,
+				83,
+				86,
+				87,
+				89,
+				91,
+				93,
+				95,
+				98,
+				100,
+				102,
+				103,
+				105,
+				107,
+				109
+			]
+		}
+	],
+	"id" : "LEDControl69::@322d18bd5a26ed499fb7",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_core.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_renderer.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_viewer.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_util.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_renderer.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_glew.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "opengl32.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "glu32.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_fileio.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_lastools.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_rply.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_algo.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_kdtree.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_core.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\easy3d_util.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_backward.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_easyloggingpp.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_kdtree.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_poisson.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_ransac.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_triangle.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_tetgen.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_glutess.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "\"C:\\Users\\kylar\\Documents\\Easy3D-master\\out\\build\\x64-Debug (default)\\lib\\3rd_glfw.lib\"",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "LEDControl69",
+	"nameOnDisk" : "LEDControl69.exe",
+	"paths" : 
+	{
+		"build" : "LEDControl69",
+		"source" : "LEDControl69"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				3,
+				5,
+				7,
+				9,
+				11,
+				13,
+				16,
+				18,
+				19,
+				21,
+				24,
+				25,
+				27,
+				30,
+				31,
+				34,
+				35,
+				37,
+				39,
+				41,
+				43,
+				45,
+				47,
+				49,
+				51,
+				53,
+				55,
+				57,
+				59,
+				62,
+				64,
+				66,
+				68,
+				71,
+				73,
+				75,
+				77,
+				79,
+				81,
+				83,
+				86,
+				87,
+				89,
+				91,
+				93,
+				95,
+				98,
+				100,
+				102,
+				103,
+				105,
+				107,
+				109
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				4,
+				6,
+				8,
+				10,
+				12,
+				14,
+				15,
+				17,
+				20,
+				22,
+				23,
+				26,
+				28,
+				29,
+				32,
+				33,
+				36,
+				38,
+				40,
+				42,
+				44,
+				46,
+				48,
+				50,
+				52,
+				54,
+				56,
+				58,
+				60,
+				61,
+				63,
+				65,
+				67,
+				69,
+				70,
+				72,
+				74,
+				76,
+				78,
+				80,
+				82,
+				84,
+				85,
+				88,
+				90,
+				92,
+				94,
+				96,
+				97,
+				99,
+				101,
+				104,
+				106,
+				108,
+				110
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/LEDControl69.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/LEDControl69.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Networking/ADDRESS_CONFIG.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Networking/e131_packet.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Networking/e131_packet.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Networking/ledcontrol.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Networking/ledcontrol.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Networking/udpsend_windows.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Networking/udpsend_windows.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Networking/ledcontrol_tests.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Networking/ledcontrol_tests.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Graphics/DomeViewer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Graphics/DomeViewer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Graphics/graphics_test.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Graphics/graphics_test.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/node.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/node.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/strut.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/strut.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/graph.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/graph.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/dome.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/dome.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Graphics/render.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Graphics/render.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/led.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/led.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/pattern.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/pattern.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/ledengine.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/ledengine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/shared.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/shared.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/mapping.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/mapping.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/RainbowSweeps.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/RainbowSweeps.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/helpers.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/helpers.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/RGBPat.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/RGBPat.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/EmptyPat.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/EmptyPat.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Calibration.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Calibration.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Debug.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Debug.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/LEDInterface.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/LEDInterface.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Effect.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Effect.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/HEXPulse.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/HEXPulse.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/UsingEffects.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/UsingEffects.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/EmptyEffect.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/EmptyEffect.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/EffectEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/EffectEngine.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/LEDChange.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/LEDChange.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/color_structs.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/Objects/LLnode.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/Objects/LLnode.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/WhiteOut.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/WhiteOut.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Fireflies.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Fireflies.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Firefly.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Firefly.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/positioning.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Pinwheel.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Pinwheel.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/SwingingStrut.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/SwingingStrut.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Firework.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Firework.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Shimmer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Shimmer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/TwinklyNight.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/TwinklyNight.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Snake.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Snake.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/CXBOXController.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/CXBOXController.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/XBOX.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/XBOX.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/Button.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/Button.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Fireworks.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Fireworks.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Interface/Thumbstick.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Interface/Thumbstick.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Pershing.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Patterns/Pershing.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/SnakeEffect.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/SnakeEffect.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Blink.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Blink.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/SnakeFirework.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/SnakeFirework.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/vectormath.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/vectormath.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Sweeps.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Sweeps.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/RainbowFirefly.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/RainbowFirefly.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/Raindrop.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/Raindrop.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "LEDControl69/PatternsPlus/Effects/RGBEff.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "LEDControl69/PatternsPlus/Effects/RGBEff.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}

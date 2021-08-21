@@ -1,8 +1,0 @@
-#ifndef LEDCONTROL_UDPSEND_WINDOWS_H
-#define LEDCONTROL_UDPSEND_WINDOWS_H
-
-
-int udpSend_windows(char* SendBuf);
-
-
-#endif //LEDCONTROL_UDPSEND_WINDOWS_H
