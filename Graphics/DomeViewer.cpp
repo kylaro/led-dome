@@ -49,14 +49,14 @@ namespace easy3d {
 	bool DomeViewer::callback_event_keyboard(int key, int action, int modifiers) {
 		if (action == 1) {
 			switch (key) {
-				case 257:
+				case 257://Enter
 					//printf("ENTER");
 					
 					submitBuffer();
 					
 					buffer_i = 0;
 					break;
-				case 259:
+				case 259://Backspace
 					//printf("BACKSPACE");
 					shared->bufferPipe[buffer_i] = 0;
 					buffer_i = buffer_i > 0 ? buffer_i - 1 : 0;
@@ -124,11 +124,8 @@ namespace easy3d {
 	}
 
 	bool printEStats = true;
-	//Running at about 133 FPS when nothing else
+
 	void DomeViewer::draw() const {
-		//drawable->set_point_size(5);
-		auto now = std::chrono::high_resolution_clock::now();
-		uint32_t beginNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
 		colors.clear();
 		
 		if (shared->calibratingPipe) {
@@ -141,17 +138,7 @@ namespace easy3d {
 				Node* endNode = edge->endNode;
 				
 				if (e == shared->selectedEdgePipe) {
-					/*if (e == 32) {
-						if (printEStats) {
-							for (int i = 0; i < edge->numLEDs; i++) {
-								printf("\ni:%d\nindex:%d\nz:%f\n", i, edge->leds[i]->index, edge->leds[i]->z);
-							}
-							printEStats = false;
-						}
-					}
-					else {
-						printEStats = true;
-					}*/
+
 					colors.push_back(easy3d::vec3(0, 1, 0));//start pixel is green;
 					for (int i = 1; i < edge->numLEDs - 1; i++) {
 						colors.push_back(easy3d::vec3(0,0,1));
@@ -182,43 +169,23 @@ namespace easy3d {
 					if (end == 1) {
 						colors.push_back(easy3d::vec3(1, 0, 0));
 					}
-					
 				}
-				
-				
-
 			}
 		}
 		else {
 			//In here is normal drawing
+			led_t* lboy;
 			for (Strut* edge : myDome->struts) {
 				for (LED* led : edge->leds) {
-					//points.push_back(easy3d::vec3(led->x, led->y, led->z));
-					//colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1 - edge->letter / 4.0f, edge->letter / 4.0f));
-					colors.push_back(easy3d::vec3(getLED(led->index, shared->viewReal)->r / 256.0f, getLED(led->index, shared->viewReal)->g / 256.0f, getLED(led->index, shared->viewReal)->b / 256.0f));
+					lboy = getLED(led->index, shared->viewReal);
+					colors.push_back(easy3d::vec3(lboy->r / 256.0f, lboy->g / 256.0f, lboy->b / 256.0f));
 				}
 			}
 		}
-		
-		now = std::chrono::high_resolution_clock::now();
-		uint32_t endNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-		uint32_t elapsed = endNanos - beginNanos;
-		//std::cout << elapsed << "\t\t color pushing back " << std::endl;
-		now = std::chrono::high_resolution_clock::now();
-		beginNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-
 
 		drawable->update_color_buffer(colors);
 
-
 		Viewer::update();
 		Viewer::draw();
-		now = std::chrono::high_resolution_clock::now();
-		endNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-		elapsed = endNanos - beginNanos;
-		//std::cout << elapsed << "\t\t other drawing time" << std::endl;
 	}
-
-
-
 }

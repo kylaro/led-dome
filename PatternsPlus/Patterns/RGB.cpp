@@ -24,7 +24,5 @@ void RGB::run(bool real) {
 		}
 		
 	}
-	//delay2(1000000);
-	updateLEDs(real);
 	
 }

@@ -48,9 +48,6 @@ int udpSend_windows(char* pkt) {
         init = 0;
         std::cout << "socket reinit" << std::endl;
     }
-    else {
-        //std::cout << "goood" << std::endl;
-    }
 
     return 0;
 

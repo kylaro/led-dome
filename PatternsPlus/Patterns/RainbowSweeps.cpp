@@ -40,7 +40,7 @@ void RainbowSweeps:: run(bool real) {
 
 	switch (mode) {
 	case 0:
-		
+		//this is just full rainbow
 		numLeds = mapping->phiLeds.size();
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->phiLeds[i]->index;
@@ -128,16 +128,7 @@ void RainbowSweeps:: run(bool real) {
 
 	}
 	
-	
 
-
-
-	//delay2(100000);
-	//std::cout << time(10e3) << std::endl;
-	//time(100);
-	updateLEDs( real);
-
-	//setLED(i, wheel(k));
 	i++;
 	
 }

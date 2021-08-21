@@ -17,9 +17,6 @@ void loadCalibration(Dome* dome) {
 	uint32_t edge, led, confirmed, reversed;
 	if (cal_file_in.is_open()) {
 		printf("Loading cal...\n");
-		//while (getline(cal_file_in, line)) {
-		//	printf("%s",line);
-		//}
 		while (cal_file_in >> edge >> led >> confirmed >> reversed) {
 			//printf("%d %d %d\n", edge, led, confirmed);
 			dome->struts[edge]->startLED = led;
@@ -28,7 +25,6 @@ void loadCalibration(Dome* dome) {
 			dome->struts[edge]->regenLEDs();
 		}
 		dome->regenLEDs();
-
 
 		cal_file_in.close();
 		printf("Finished Loading Calibration! :)\n");

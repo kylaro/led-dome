@@ -16,13 +16,6 @@ using namespace std;
 //(gci -include *.c,*.cpp,*.h -recurse | select-string .).Count
 int main()
 {
-
-	
-
-
-	//cout << "Hello CMake." << endl;
-
-	//graphics_test();
 	Dome* theDome = new Dome();// one dome object for all
 	Shared* sharedObject = new Shared();//a shared object to transfer data between threads
 	sharedObject->dome = theDome;

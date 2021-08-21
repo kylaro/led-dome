@@ -5,6 +5,7 @@
 #include "e131_packet.h"
 //#include "udpclient.h"
 #include "udpsend_windows.h"
+#include <vector>
 
 #define NUM_UNIVERSES 97 // This is the max number of universes for 16384 pixels
 #define LEDS_PER_UNIVERSE 170
@@ -13,6 +14,25 @@
 led_t leds[MAX_LEDS];
 led_t leds_sim[MAX_LEDS];
 led_t ledbuffer[MAX_LEDS];
+
+uint32_t dirtyMap[4];
+
+std::vector<int> dirtyUnivs;
+uint8_t seqCounter = 0;
+
+void clearDirtyMap() {
+    dirtyMap[0] = 0;
+    dirtyMap[1] = 0;
+    dirtyMap[2] = 0;
+    dirtyMap[3] = 0;
+}
+int getDirtyMap(uint32_t univ) {
+    return (dirtyMap[univ / 32] >> (univ % 32)) & 1;
+}
+
+void setDirtyMap(uint32_t univ) {
+    dirtyMap[univ / 32] |= 1 << (univ % 32);
+}
 
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue) {
     return ((red) << 16) | ((green) << 8) | (blue);
@@ -89,7 +109,14 @@ void clearLEDs(bool real) {
 
 //everything has already been done, we just gotta update the array and universe modified thing
 void setLED(uint32_t i) {
-    modified_universes[getUniverse(i)] = 1; // mark it as changed so we can send an update packet
+    uint16_t uni = getUniverse(i);
+    if (!getDirtyMap(uni)) {
+        dirtyUnivs.push_back(uni);
+    }
+   
+    setDirtyMap(uni);
+   
+    modified_universes[uni] = 1; // mark it as changed so we can send an update packet
 }
 
 void setLED(uint32_t i, uint32_t rgb) {
@@ -97,6 +124,13 @@ void setLED(uint32_t i, uint32_t rgb) {
         setLED(i);//only set on change
     }
     leds[i].rgb = rgb;
+    //EXPERIMENTAL CODE:
+    uint16_t universe = getUniverse(i);
+    uint16_t channel = getChannel(i);
+    packets[universe].dmp.prop_val[channel] = leds[i].r / BRIGHTNESS_DIVIDE;
+    packets[universe].dmp.prop_val[channel + 1] = leds[i].g / BRIGHTNESS_DIVIDE;
+    packets[universe].dmp.prop_val[channel + 2] = leds[i].b / BRIGHTNESS_DIVIDE;
+    //END EXPERIMENTAL CODE
     
 }
 void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue) {
@@ -106,6 +140,14 @@ void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue) {
     leds[i].r = red;
     leds[i].g = green;
     leds[i].b = blue;
+
+    //EXPERIMENTAL CODE:
+    uint16_t universe = getUniverse(i);
+    uint16_t channel = getChannel(i);
+    packets[universe].dmp.prop_val[channel] = leds[i].r / BRIGHTNESS_DIVIDE;
+    packets[universe].dmp.prop_val[channel + 1] = leds[i].g / BRIGHTNESS_DIVIDE;
+    packets[universe].dmp.prop_val[channel + 2] = leds[i].b / BRIGHTNESS_DIVIDE;
+    //END EXPERIMENTAL CODE
 }
 
 void setLED(uint32_t i, uint32_t rgb, bool real) {
@@ -134,6 +176,7 @@ void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue, bool real) {
 void initLEDController() {
     //Init packet object
     initPacket();
+    initPackets();
     updateLEDs();
 }
 
@@ -144,6 +187,17 @@ uint32_t ledFromUniChan(uint16_t universe, uint16_t channel) {
 //Sends the packet to any universe that had a modification to it's leds like the dirty little bits they are
 void updateLEDs() {
 
+    for (int univ : dirtyUnivs) {
+        setSeq(univ, seqCounter);
+        udpSend_windows(packets[univ].raw);
+        seqCounter++;
+    }
+    dirtyUnivs.clear();
+    clearDirtyMap();
+    
+
+
+    return;
     for (uint8_t uni = 0; uni < NUM_UNIVERSES; uni++) {
         if (modified_universes[uni]) { // check dirty bit
             //If this universe has a modified LED
@@ -153,22 +207,11 @@ void updateLEDs() {
                 uint16_t channel = getChannel(uni_led);
 
                 uint32_t led = ledFromUniChan(uni, channel); // todo could also just use uni_led lol
-                //if (leds[led].aZ == 0) {
-                    packet.dmp.prop_val[channel] = leds[led].r / BRIGHTNESS_DIVIDE;
-                    packet.dmp.prop_val[channel + 1] = leds[led].g / BRIGHTNESS_DIVIDE;
-                    packet.dmp.prop_val[channel + 2] = leds[led].b / BRIGHTNESS_DIVIDE;
-                //}
-               // else {
-                //    packet.dmp.prop_val[channel] = leds[led].r / leds[led].aZ;
-                //    packet.dmp.prop_val[channel + 1] = leds[led].g / leds[led].aZ;
-                //    packet.dmp.prop_val[channel + 2] = leds[led].b / leds[led].aZ;
-                 //   leds[led].aZ = 0;
-                //}
                 
-                
-
+                packet.dmp.prop_val[channel] = leds[led].r / BRIGHTNESS_DIVIDE;
+                packet.dmp.prop_val[channel + 1] = leds[led].g / BRIGHTNESS_DIVIDE;
+                packet.dmp.prop_val[channel + 2] = leds[led].b / BRIGHTNESS_DIVIDE;
             }
-
 
             incSeq();
 

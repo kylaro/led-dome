@@ -30,7 +30,6 @@ void init() {
 	initLEDController();
 	loadCalibration(dome);
 	shared->mapping = new Mapping(dome);
-	
 }
 
 
@@ -75,46 +74,52 @@ void runEngine() {
 	
 	uint32_t beginMicros = nowMicros();
 	uint32_t lastbeginMicros = nowMicros();
-	uint32_t test = 0;
 	
 	uint32_t elapsed = 0;
 	double freetime = 0;
 
+	uint32_t timer = 0;
 	
 	
 	while (1) {
+		//PREPARE STATISTICS
 		count++;
-		
 		beginMicros = nowMicros();
 		elapsed = beginMicros - lastbeginMicros;
 		effectiveFPS = 1e6 / (double)elapsed;//(effectiveFPS * 19 + (1e6 / elapsed)) / 20.0;... 1 second / time for 1 frame
 		lastbeginMicros = beginMicros;
+
+		timer = nowMicros();
+		//RUN THE PATTERNs
 		if (real_pattern_i == sim_pattern_i) {
 			realPattern->run(true);
 			shared->viewReal = true;
 		}
 		else {
-			//run both
-			
+			//run both if they are different
 			simulatedPattern->run(false);/// i wish there was a way to thread this...
 			realPattern->run(true);
 			shared->viewReal = false;
-			
 		}
-	
+		printf("RUN=%d\n", nowMicros() - timer);
+		//Then update leds
+		timer = nowMicros();
+		updateLEDs();
+		printf("UPD=%d\n", nowMicros() - timer);
+		//WARN IF FREETIME IS LOW
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
-		
+
 		if (freetime_avg == -1) {
 			freetime_avg = freetime;
 		}
 		if (freetime_avg < 0.2) {
 			printf("Warning, free time between patterns is very low at: %f out of 1\n", freetime);
 			printf("FreetimeAVG = %f\n", freetime_avg);
-		}
-		
-		else {
+		} else {
 			freetime_avg = (freetime_avg * 9 + freetime) / 10.0; // keep track of average freetime
 		}
+
+		//PROCESS USER INPUT DURING FREE TIME
 		//note: nowNanos wraps to 0 
 		while ((elapsed = nowMicros()-(beginMicros)) < framerate_micros) {
 			//We will be handling input until it is time to do the next frame

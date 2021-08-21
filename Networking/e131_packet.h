@@ -54,10 +54,13 @@ extern "C" {
     } e131_packet_t;
 
     extern e131_packet_t packet;
+    extern e131_packet_t packets[97];
 
     void incSeq();
     void initPacket();
+    void initPackets();
     void setUniverse(uint16_t universe);
+    void setSeq(uint16_t universe, uint8_t seq);
 
 #endif //LEDCONTROL_E131_PACKET_H
 
