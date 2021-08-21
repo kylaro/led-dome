@@ -1,6 +1,7 @@
 #ifndef LED_HFILE
 #define LED_HFILE
 
+#include "../PatternsPlus/positioning.h"
 class LED {
 public:
 	LED(int i);
@@ -8,6 +9,7 @@ public:
 	int index;
 	int confirmed = 0;
 	float x, y, z;
+	xyz_f xyz;
 
 };
 

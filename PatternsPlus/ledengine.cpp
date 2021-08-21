@@ -14,11 +14,12 @@
 #include "EffectEngine.h"
 #include "Interface/LEDInterface.h"
 #include "Patterns/UsingEffects.h"
+#include "Patterns/ShowLL.h"
 
 Dome* dome;
 Shared* shared;
 
-#define FRAME_RATE 69 //duh. suggestd max is 350 to ensure controller can handle all the packets
+#define FRAME_RATE 50 //duh. suggestd max is 350 to ensure controller can handle all the packets
 uint32_t framerate_nanos = (1 / ((float)FRAME_RATE)) * 1e9;
 uint32_t framerate_micros = (1 / ((float)FRAME_RATE)) * 1e6;
 uint32_t framerate_millis = (1 / ((float)FRAME_RATE)) * 1e3;
@@ -71,7 +72,7 @@ void runEngine() {
 	
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
-
+	patterns.push_back(new ShowLL(shared));
 	patterns.push_back(new UsingEffects(shared));
 	patterns.push_back(new RainbowSweeps(shared));
 	
@@ -134,11 +135,11 @@ void runEngine() {
 		}
 		//RUN THE EFFECTS THAT THE PATTERNS HAVE CREATED
 		
-		printf("RUN=%d\n", nowMicros() - timer);
+		//printf("RUN=%d\n", nowMicros() - timer);
 		//Then update leds
 		timer = nowMicros();
 		updateLEDs();
-		printf("UPD=%d\n", nowMicros() - timer);
+		//printf("UPD=%d\n", nowMicros() - timer);
 		//WARN IF FREETIME IS LOW
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
 
@@ -154,7 +155,9 @@ void runEngine() {
 
 		//PROCESS USER INPUT DURING FREE TIME
 		//note: nowNanos wraps to 0 
-		while ((elapsed = nowMicros()-(beginMicros)) < framerate_micros) {
+		do {
+
+			//printf("test%d\n", shared->directionPipe);
 			//We will be handling input until it is time to do the next frame
 			//printf("%f\n", time(10000));
 			//HANDLE SUBMITTED BUFFER
@@ -165,7 +168,9 @@ void runEngine() {
 					//The buffer is empty, this is just enter
 					printf("Real = simulation\n");
 					if (real_pattern_i != sim_pattern_i) {
+						effectEngineReal->clear();
 						clearLEDs();
+
 					}
 					real_pattern_i = sim_pattern_i;
 
@@ -196,7 +201,7 @@ void runEngine() {
 				clearLEDs(false);
 			}
 
-		}
+		} while ((elapsed = nowMicros() - (beginMicros)) < framerate_micros);
 	}
 	
 }

@@ -6,6 +6,10 @@ EffectEngine::EffectEngine() {
 }
 
 void EffectEngine::clear() {
+    for (Effect* eff : effects) {
+        eff->release();
+    }
+    run();
     effects.clear();
 }
 
@@ -21,6 +25,7 @@ void EffectEngine::run() {
         if (eff->done ) {
             // erase() invalidates the iterator, use returned iterator
             it = effects.erase(it);
+            //free(eff);
             continue;
         } else {
             ++it;

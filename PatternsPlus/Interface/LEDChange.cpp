@@ -11,5 +11,5 @@ double LEDChange::getWatts(rgb_f rgb) {
 LEDChange::LEDChange(int i, rgb_f rgb) {
 	index = i;
 	this->rgb = rgb;
-	watts = getWatts(rgb);
+	//watts = getWatts(rgb);
 }

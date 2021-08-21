@@ -100,6 +100,8 @@ void Calibration::run(bool real) {
 	double t7 = 0;
 	double t14 = 0;
 	int keyFlag = 0;
+	clearLEDs();
+	clearLEDs();
 	while (1) {
 		if (quit) {
 			break;
@@ -156,6 +158,7 @@ void Calibration::run(bool real) {
 		//write buffer to thing
 		for (int i = 0; i < MAX_LEDS; i++) {
 			//setLED(i, ledbuffer[i],false);
+			setLED(i, ledbuffer[i]>>2, true);
 			setLED(i, ledbuffer[i],true);
 		}
 

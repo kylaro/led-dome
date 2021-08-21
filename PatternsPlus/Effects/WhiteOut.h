@@ -1,9 +1,9 @@
-#ifndef EMPTYEFF_H
-#define EMPTYEFF_H
+#ifndef WHITEOUT_H
+#define WHITEOUT_H
 #include "Effect.h"
 
 
-class EmptyEffect : public Effect {
+class WhiteOut : public Effect {
 public:
 	using Effect::Effect;
 

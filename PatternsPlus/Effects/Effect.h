@@ -11,11 +11,13 @@ public:
 
 	virtual void run();
 	virtual void init();
+	virtual void release();
 
 	LEDInterface * LEDs;
 	Mapping* mapping;
 
 	int done = 0;
+	int initted = 0;
 
 };
 

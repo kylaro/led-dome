@@ -103,6 +103,9 @@ namespace easy3d {
 		//myDome = new Dome();
 		for (Strut* edge : myDome->struts) {
 			for (LED* led : edge->leds) {
+				if (led->confirmed == 0) {
+					continue;//comment this out for calibration;
+				}
 				points.push_back(easy3d::vec3(led->x, led->y, led->z));
 				//colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1 - edge->letter / 4.0f, edge->letter / 4.0f));
 				colors.push_back(easy3d::vec3(getLED(led->index)->r / 256.0f, getLED(led->index)->g / 256.0f, getLED(led->index)->b / 256.0f));
@@ -177,8 +180,16 @@ namespace easy3d {
 			led_t* lboy;
 			for (Strut* edge : myDome->struts) {
 				for (LED* led : edge->leds) {
+					if (led->confirmed == 0) {
+						continue;//comment this out for calibration;
+					}
 					lboy = getLED(led->index, shared->viewReal);
-					colors.push_back(easy3d::vec3(lboy->r / 256.0f, lboy->g / 256.0f, lboy->b / 256.0f));
+					if (led->confirmed) {
+						colors.push_back(easy3d::vec3(lboy->r / 256.0f, lboy->g / 256.0f, lboy->b / 256.0f));
+					}
+					else {
+						colors.push_back(easy3d::vec3(0, 0, 0));
+					}
 				}
 			}
 		}

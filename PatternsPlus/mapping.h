@@ -1,6 +1,8 @@
 #ifndef MAPPING_H
 #define MAPPING_H
 #include "../Objects/dome.h"
+#include "../Objects/LLnode.h"
+#include <map>
 
 class Mapping {
 
@@ -17,10 +19,17 @@ public:
 	float getEdgePhi(int e);
 	float getLEDPhi(int led);
 	float getLEDPhi(LED* led);
+	Strut* LEDtoStrut(LED* led);
 	LED* getLEDObj(int led);
+	std::vector<LLnode*> llnodes;
+	std::map<int, std::vector<LLnode*>> llnodes_map;
+	std::vector<Node* > nodesByY;
+
 private:
 	
 	bool isClose(float x, float y);
+	void LLnodeRecursive(LLnode* llnode);
+	void generateLLnodes();
 };
 
 #endif

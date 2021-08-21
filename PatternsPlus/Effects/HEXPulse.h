@@ -9,6 +9,7 @@ public:
 
 	void init();
 	void run();
+	void release();
 
 	std::vector<ihsv_f> leds;
 	int startTime = 0;

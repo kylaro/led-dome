@@ -14,3 +14,7 @@ void Effect::init() {
 
 
 }
+
+void Effect::release() {
+
+}

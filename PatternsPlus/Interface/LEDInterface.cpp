@@ -42,10 +42,16 @@ double LEDInterface::sanitizeSV(double x) {
          rgbTotal += led->g;
          rgbTotal += led->b;
      }
-     double watts = 120 + 0.03 * (12.0 * rgbTotal) / 255.0;
+     double watts = 120+0.02 * (12.0 * rgbTotal) / 255.0;
      
      double max_watts = 1000.0;
-     double scale = max_watts / watts;
+     double scale = 1; (max_watts - 120) / watts;
+     if (watts < max_watts) {
+         scale = 1;
+     }
+     else {
+         scale = (max_watts) / watts;
+     }
      
      if (scale > 1) {
          scale = 1.0;
@@ -56,10 +62,12 @@ double LEDInterface::sanitizeSV(double x) {
 }
 
 void LEDInterface::apply() {
-    double scale = getScale();
+    double scale = 1;/// getScale();
     for (LEDChange* change : changes) {
         setLED(change->index, (change->rgb.r*255.0*scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
+        free(change);
     }
+    
     changes.clear();
 
     return;

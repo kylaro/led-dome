@@ -38,7 +38,7 @@ int udpSend_windows(char* pkt) {
         clientService.sin_port = htons(PORT_WIN);
 
         if (connect(s, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR) {
-            std::cout << "oh no it didn't work" << std::endl;
+            //std::cout << "oh no it didn't work" << std::endl;
         }
 
         init = 1;
@@ -46,7 +46,7 @@ int udpSend_windows(char* pkt) {
 
     if (send(s, pkt, PACKET_LENGTH_WIN, 0) == SOCKET_ERROR) {
         init = 0;
-        std::cout << "socket reinit" << std::endl;
+        std::cout << ".";
     }
 
     return 0;

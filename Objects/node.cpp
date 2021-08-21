@@ -4,6 +4,7 @@ Node::Node(float x, float y, float z) {
 	this->x = x;
 	this->y = y;
 	this->z = z;
+	this->xyz = { x,y,z };
 }
 
 

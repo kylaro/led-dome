@@ -4,6 +4,7 @@
 #include "strut.h"
 #include "led.h"
 #include <vector>
+#include "../PatternsPlus/positioning.h"
 //class Node; // this was here but not sturt
 class Strut;
 
@@ -21,6 +22,7 @@ public:
 	float x;
 	float y;
 	float z;
+	xyz_f xyz;
 	int index;
 };
 
