@@ -42,6 +42,7 @@ void RainbowSweeps:: run(bool real) {
 	case 0:
 		//this is just full rainbow
 		numLeds = mapping->phiLeds.size();
+
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->phiLeds[i]->index;
 			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));

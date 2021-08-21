@@ -18,6 +18,8 @@ public:
 	Dome* dome;
 	Shared* shared;
 	Mapping* mapping;
+	EffectEngine* effectEngine;
+	LEDInterface* ledInterface;
 private:
 	virtual void beforeRender();
 	virtual void render(int i, float x, float y, float z);

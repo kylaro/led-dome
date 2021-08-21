@@ -7,6 +7,7 @@ Pattern::Pattern( Shared * sharedObject ) {
 	this->dome = sharedObject->dome;
 	this->shared = sharedObject;
 	this->mapping = sharedObject->mapping;
+	this->effectEngine = sharedObject->effectEngine;
 }
 
 /*

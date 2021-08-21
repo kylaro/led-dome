@@ -11,6 +11,9 @@
 #include <signal.h>
 #include <string>
 #include "Patterns/Debug.h"
+#include "EffectEngine.h"
+#include "Interface/LEDInterface.h"
+#include "Patterns/UsingEffects.h"
 
 Dome* dome;
 Shared* shared;
@@ -59,10 +62,17 @@ void runEngine() {
 	shared->clearBuffer();
 	uint32_t count = 0;
 	std::vector<Pattern*> patterns;
+	EffectEngine* effectEngineReal = new EffectEngine();
+	EffectEngine* effectEngineSim = new EffectEngine();
+	LEDInterface* ledInterfaceReal = new LEDInterface(true);
+	LEDInterface* ledInterfaceSim = new LEDInterface(false);
+	//shared->effectEngine = effectEngine;
+	
+	
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
 
-	//patterns.push_back(new Debug(shared));
+	patterns.push_back(new UsingEffects(shared));
 	patterns.push_back(new RainbowSweeps(shared));
 	patterns.push_back(new RGB(shared));
 
@@ -92,20 +102,34 @@ void runEngine() {
 		timer = nowMicros();
 		//RUN THE PATTERNs
 		if (real_pattern_i == sim_pattern_i) {
+			realPattern->ledInterface = ledInterfaceReal;
+			realPattern->effectEngine = effectEngineReal;
 			realPattern->run(true);
+			effectEngineReal->run();
 			shared->viewReal = true;
+			ledInterfaceReal->apply();
 		}
 		else {
 			//run both if they are different
+			realPattern->ledInterface = ledInterfaceReal;
+			realPattern->effectEngine = effectEngineReal;
+			simulatedPattern->ledInterface = ledInterfaceSim;
+			simulatedPattern->effectEngine = effectEngineSim;
 			simulatedPattern->run(false);/// i wish there was a way to thread this...
 			realPattern->run(true);
+			effectEngineReal->run();
+			effectEngineSim->run();
 			shared->viewReal = false;
+			ledInterfaceReal->apply();
+			ledInterfaceSim->apply();
 		}
-		printf("RUN=%d\n", nowMicros() - timer);
+		//RUN THE EFFECTS THAT THE PATTERNS HAVE CREATED
+		
+		//printf("RUN=%d\n", nowMicros() - timer);
 		//Then update leds
 		timer = nowMicros();
 		updateLEDs();
-		printf("UPD=%d\n", nowMicros() - timer);
+		//printf("UPD=%d\n", nowMicros() - timer);
 		//WARN IF FREETIME IS LOW
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
 
@@ -137,6 +161,7 @@ void runEngine() {
 					real_pattern_i = sim_pattern_i;
 
 					realPattern = patterns[sim_pattern_i];
+					//TODO MAYBE ADD A SWAP BETWEEN REAL AND SIM EFFECT ENGINES
 					shared->viewReal = true;
 				}
 				else {
@@ -157,6 +182,7 @@ void runEngine() {
 				sim_pattern_i += shared->directionPipe;
 				sim_pattern_i = negMod(sim_pattern_i, patterns_len);
 				simulatedPattern = patterns[sim_pattern_i];
+				effectEngineSim->clear();
 				shared->directionPipe = 0;
 				clearLEDs(false);
 			}

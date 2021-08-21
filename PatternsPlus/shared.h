@@ -4,6 +4,7 @@
 #define BUFFER_LEN 69
 #include "mapping.h"
 #include "../Objects/dome.h"
+#include "EffectEngine.h"
 //Make this have semaphors or some kind of lock ? ? ?
 //The reason I'm not doing that is because most of the stuff here is so primitive...
 class Shared{
@@ -20,6 +21,7 @@ public:
 	int keyHeldPipe = 0;
 	Mapping* mapping;
 	Dome* dome;
+	EffectEngine* effectEngine;
 	
 
 	void clearBuffer();

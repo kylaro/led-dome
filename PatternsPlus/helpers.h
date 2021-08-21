@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 #include "../Objects/dome.h"
+
+
+
 void delay2(int idk);
 int negMod(int x, int mod);
 double time(uint32_t period);//returns 0 to 1 of how far in the period we are.

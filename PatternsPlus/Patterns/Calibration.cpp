@@ -173,6 +173,9 @@ void Calibration::run(bool real) {
 			if (keyFlag < 3 && (shared->keyPressedPipe || shared->keyHeldPipe)) {
 				int key = shared->keyHeldPipe > 0 ? shared->keyHeldPipe : shared->keyPressedPipe;
 				switch (key) {
+				case 'o':
+					
+					break;
 				case 'R':
 				case 'r':
 				case '0':
