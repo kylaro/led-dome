@@ -4,6 +4,8 @@ Real-time LED Dome simulator AND controller. The control is done through E131 / 
 Please enjoy the timelapse of this project being built!
 https://youtu.be/cLGBgVkZvUo
 
+The commits are all in 1 day because they are coming from my email chain repo. This project was worked on heavily between February 24th 2021 to March 19th 2021.
+
 Requires Easy3D to compile. This is for visualizing the simulation.
 There is a .exe to run this in the repo. Use arrow keys to change the pattern. Xbox controller to control the snake - it's much cooler in real life though.
 https://github.com/kylaro/led-dome/blob/master/out/build/x64-Debug%20(default)/LEDControl69/LEDControl69.exe
