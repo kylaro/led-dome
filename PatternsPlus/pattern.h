@@ -11,6 +11,8 @@ class Pattern {
 
 public:
 	Pattern(Shared * sharedObject);
+	bool ledConfirmed(LED* led);
+	bool ledConfirmed(int i);
 	//std::thread start(); // attempted threading...
 	virtual void run(bool real);
 	Dome* dome;

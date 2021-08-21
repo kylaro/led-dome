@@ -16,7 +16,7 @@ uint32_t numLeds = 0;
 
 void RainbowSweeps:: run(bool real) {
 	
-	double t = time(3000);
+	double t = time(4000);
 
 	//pats.push_back(rainsweep);
 
@@ -31,7 +31,7 @@ void RainbowSweeps:: run(bool real) {
 		shared->spacePressedPipe = 0;
 
 
-		mode = negMod(mode, 5);
+		mode = negMod(mode, 6);
 	}
 
 	
@@ -45,16 +45,31 @@ void RainbowSweeps:: run(bool real) {
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->phiLeds[i]->index;
 			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
-			color = getB(color);// we now have an intensity 0-255
-			color = sharpenRGB(color, 200);
-			color = color > 0;
-			color = wheel(-t * 256 + i / 8) * color;
-
-			setLED(index, (color), real);
+			//color = getB(color);// we now have an intensity 0-255
+			//color = sharpenRGB(color, 200);
+			//color = color > 0;
+			//color = wheel(-t * 256 + i / 8) * color;
+			if (ledConfirmed(mapping->phiLeds[i]))
+				setLED(index, (color), real);
+				
 		}
 
 		break;
 	case 1:
+		numLeds = mapping->phiLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->phiLeds[i]->index;
+			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
+			if (ledConfirmed(mapping->phiLeds[i]))
+				setLED(index, (color), real);
+
+		}
+		break;
+	case 2:
 		numLeds = mapping->xLeds.size();
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->xLeds[i]->index;
@@ -63,12 +78,12 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-			
-			setLED(index, (color), real);
+			if (ledConfirmed(mapping->xLeds[i]))
+				setLED(index, (color), real);
 		}
 
 		break;
-	case 2:
+	case 3:
 		numLeds = mapping->yLeds.size();
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->yLeds[i]->index;
@@ -77,12 +92,12 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-
-			setLED(index, (color), real);
+			if (ledConfirmed(mapping->yLeds[i]))
+				setLED(index, (color), real);
 		}
 
 		break;
-	case 3:
+	case 4:
 		numLeds = mapping->zLeds.size();
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->zLeds[i]->index;
@@ -91,12 +106,12 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-
-			setLED(index, (color), real);
+			if (ledConfirmed(index))
+				setLED(index, (color), real);
 		}
 		
 		break;
-	case 4:
+	case 5:
 		numLeds = mapping->tanLeds.size();
 		for (int i = 0; i < numLeds; i++) {
 			int index = mapping->tanLeds[i]->index;
@@ -105,8 +120,8 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-
-			setLED(index, (color), real);
+			if (ledConfirmed(index))
+				setLED(index, (color), real);
 		}
 		break;
 
@@ -126,3 +141,4 @@ void RainbowSweeps:: run(bool real) {
 	i++;
 	
 }
+

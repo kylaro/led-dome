@@ -20,6 +20,7 @@ uint32_t assembleRGB(uint32_t r, uint32_t g, uint32_t b);
 uint32_t nowNanos();
 uint32_t nowMicros();
 uint32_t nowMillis();
+float distance3d(float x1, float y1, float z1, float x2, float y2, float z2);
 
 void loadCalibration(Dome* dome);
 #endif

@@ -20,6 +20,15 @@ bool isFake(int num) {
 	return false;
 }
 
+void Dome::regenLEDs() {
+	leds.clear();
+	for (Strut* strut : struts) {
+		for (LED* led : strut->leds) {
+			leds.push_back(led);
+		}
+	}
+}
+
 Dome::Dome() {
 	dataPipe = 0;
 	float radius = 2.1f;
@@ -51,23 +60,9 @@ Dome::Dome() {
 		if (isFake(e1) || isFake(e2)) {
 			continue;
 		}
-		Strut* newStrut = Graph::createStrut(nodes_array[e1], nodes_array[e2],letter, index);
+		Strut* newStrut = Graph::createStrut(nodes_array[e1], nodes_array[e2],letter, index, startLED);
 		
-		switch (letter) {
-		case 0: //A
-			numLEDs = 35;
-			break;
-		case 1: //B
-			numLEDs = 42;
-			break;
-		case 2: //C
-			numLEDs = 47;
-			break;
-		case 3: //D
-			numLEDs = 49;
-			break;
-		}
-		newStrut->generateLEDs(startLED, numLEDs);
+		
 		struts_array[e] = newStrut;
 		startLED += numLEDs;
 		for (LED* l : newStrut->leds) {

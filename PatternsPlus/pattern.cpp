@@ -16,6 +16,37 @@ std::thread Pattern::start() {
 	
 }*/
 
+bool Pattern::ledConfirmed(LED * led) {
+	if (led == NULL) {
+		return false;
+	}
+	return led->confirmed;
+}
+bool Pattern::ledConfirmed(int i) {
+	LED* ledobj = shared->mapping->getLEDObj(i);
+	if (ledobj == NULL) {
+		return false;
+	}
+	return ledobj->confirmed;
+	for (int k = 0; k < dome->leds.size(); k++) {
+		if (dome->leds[k]->index == i && dome->leds[k]->confirmed) {
+			return true;
+		}
+	}
+	return false;
+	return (dome->leds[i]->confirmed);
+	//return true;
+	for (int e = 0; e < dome->struts.size(); e++) {
+		if (dome->struts[e]->confirmed) {
+			if (dome->struts[e]->startLED <= i) {
+				if (dome->struts[e]->endLED >= i) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
 
 void Pattern::run(bool real) {
 

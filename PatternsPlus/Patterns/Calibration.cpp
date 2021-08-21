@@ -33,6 +33,11 @@ void Calibration::handleBuffer() {
 
 	}
 	else if (buf == "save") {
+		printf("\n======CALI START\n");
+		for (int e = 0; e < dome->struts.size(); e++) {
+			printf("%d %d %d %d\n",e,dome->struts[e]->startLED, dome->struts[e]->confirmed, dome->struts[e]->reversed);
+		}
+		printf("\n======CALI STOP\m");
 		cal_file.open("ledcal69.txt");
 		for (int e = 0; e < dome->struts.size(); e++) {
 			cal_file << e;
@@ -40,6 +45,8 @@ void Calibration::handleBuffer() {
 			cal_file << dome->struts[e]->startLED;
 			cal_file << ' ';
 			cal_file << dome->struts[e]->confirmed;
+			cal_file << ' ';
+			cal_file << dome->struts[e]->reversed;
 			cal_file << '\n';
 		}
 		cal_file.close();
@@ -52,10 +59,14 @@ void Calibration::handleBuffer() {
 	else if (buf == "") {
 		printf("setting edge %d start led %d\n", selectedEdge, selectedLED);
 		dome->struts[selectedEdge]->setStartLED(selectedLED);
+		
 		selectedLED = selectedLED + dome->struts[selectedEdge]->numLEDs;
+		lastConfirmedLED = selectedLED;
 		dome->struts[selectedEdge]->confirmed = 1;
 		
-		selectedEdge = negMod(selectedEdge + 1, dome->struts.size());
+		orderedEdge_i = negMod(orderedEdge_i + edgecalidir, shared->mapping->orderedEdges.size());
+		selectedEdge = shared->mapping->orderedEdges[orderedEdge_i];
+		//selectedEdge = negMod(selectedEdge + 1, dome->struts.size());
 		shared->selectedEdgePipe = selectedEdge;
 		printf("now on edge %d start led %d\n", selectedEdge, selectedLED);
 		
@@ -68,6 +79,10 @@ void Calibration::handleBuffer() {
 		help();
 	}
 	shared->clearBuffer();
+}
+
+uint32_t Calibration::getBufferLED(int i) {
+	return ledbuffer[i];
 }
 
 void Calibration::bufferLED(int i, uint32_t color) {
@@ -95,6 +110,7 @@ void Calibration::run(bool real) {
 		beginMicros = nowMicros();
 		//Draw all mapping
 		for (int i = 0; i < MAX_LEDS; i++) {
+			//if(ledConfirmed(i))
 			bufferLED(i, rgbScale(RED, 0.1)); // red for leds that are not a part of an edge
 		}
 		for (Strut * strut :  dome->struts) {
@@ -103,7 +119,10 @@ void Calibration::run(bool real) {
 					bufferLED(led->index, rgbScale(GREEN, 0.12)); //these are the leds part of a strut and confirmed;
 				}
 				else {
-					bufferLED(led->index, rgbScale(ORANGE, t5 / 8.0)); //these are uncomfired with a strut
+					if (ledConfirmed(led) == false) {
+						bufferLED(led->index, rgbScale(ORANGE, t5 / 8.0)); //these are uncomfired with a strut
+					}
+					
 				}
 				
 			}
@@ -117,11 +136,20 @@ void Calibration::run(bool real) {
 		}
 			
 		//current selection
-		for (int k = selectedLED+1; k <= selectedLED+strut->numLEDs - 1; k++) {
+		
+		for (int k = selectedLED + 1; k <= selectedLED + strut->numLEDs - 1; k++) {
 			bufferLED(k, rgbScale(BLUE, t7));
 		}
-		bufferLED(selectedLED, wheel(time(250)*255));
-		bufferLED(selectedLED+strut->numLEDs-1, RED);
+		
+		if (strut->reversed == 0) {
+			bufferLED(selectedLED, wheel(time(250) * 255));//selected led
+			bufferLED(selectedLED + strut->numLEDs - 1, RED);//end of edge
+		}
+		else {
+			bufferLED(selectedLED,RED );//selected led
+			bufferLED(selectedLED + strut->numLEDs - 1, wheel(time(250) * 255));//end of edge
+		}
+		
 				
 
 
@@ -133,7 +161,8 @@ void Calibration::run(bool real) {
 
 		updateLEDs(true);
 		keyFlag = 0;
-		while ((nowMicros() - (beginMicros)) < (1 / ((float)200)) * 1e6) {
+		int debugfps = 30;
+		while ((nowMicros() - (beginMicros)) < (1 / ((float)debugfps)) * 1e6) {
 			//delay2(100000);//make scrolling through numbers a little slower lol
 			//handle input while waiting
 			if (shared->submitPipe != 0) {
@@ -141,17 +170,43 @@ void Calibration::run(bool real) {
 				shared->keyPressedPipe = 0;
 				handleBuffer();
 			}
-			if (keyFlag < 2 && (shared->keyPressedPipe || shared->keyHeldPipe)) {
+			if (keyFlag < 3 && (shared->keyPressedPipe || shared->keyHeldPipe)) {
 				int key = shared->keyHeldPipe > 0 ? shared->keyHeldPipe : shared->keyPressedPipe;
 				switch (key) {
+				case 'R':
+				case 'r':
+				case '0':
+				case '/':
+					dome->struts[selectedEdge]->reversed ^= 1;
+					/*if (dome->struts[selectedEdge]->reversed == 1) {
+						// just became reversed, so add
+						selectedLED = negMod(selectedLED + dome->struts[selectedEdge]->numLEDs, MAX_LEDS);
+					}
+					else {
+						selectedLED = negMod(selectedLED-dome->struts[selectedEdge]->numLEDs,MAX_LEDS);
+					}*/
+					break;
+				case 32: //SPACE BAR
+					selectedLED = lastConfirmedLED;
+					printf("reselected led: %d\n", selectedLED);
+					break;
+
 				case 262: // RIGHT ARROW
-					selectedEdge = negMod(selectedEdge + 1, strutsLen);
+					
+					orderedEdge_i = negMod(orderedEdge_i + 1, shared->mapping->orderedEdges.size());
+					selectedEdge = shared->mapping->orderedEdges[orderedEdge_i];
+					edgecalidir = 1;
+					//selectedEdge = negMod(selectedEdge + 1, strutsLen);
 					selectedLED = dome->struts[selectedEdge]->startLED;
 					printf("EDGE=%d\tLED=%d\t\n", selectedEdge, selectedLED);
+					
 					break;
 				case 263: // LEFT ARROW
-					selectedEdge = negMod(selectedEdge - 1, strutsLen);
+					orderedEdge_i = negMod(orderedEdge_i - 1, shared->mapping->orderedEdges.size());
+					selectedEdge = shared->mapping->orderedEdges[orderedEdge_i];
+					//selectedEdge = negMod(selectedEdge - 1, strutsLen);
 					selectedLED = dome->struts[selectedEdge]->startLED;
+					edgecalidir = -1;
 					printf("EDGE=%d\tLED=%d\t\n", selectedEdge, selectedLED);
 					break;
 				case 265: // UP ARROW
@@ -164,6 +219,14 @@ void Calibration::run(bool real) {
 					break;
 					
 				}
+				LED* selectedLEDObj = shared->mapping->getLEDObj(selectedLED);
+				if (selectedLEDObj != NULL) {
+					printf("\nselectedLED:%d\nphi=%f\nx:\t%f\ty:\t%f\tz:\t%f\n", selectedLED, shared->mapping->getLEDPhi(selectedLED), selectedLEDObj->x, selectedLEDObj->y, selectedLEDObj->z);
+					//printf("Edge->startLED:\nx:\t%f\ty:\t%f\tz:\t%f\n", shared->mapping->getLEDObj(dome->struts[selectedEdge]->startLED)->x, shared->mapping->getLEDObj(dome->struts[selectedEdge]->startLED)->y, shared->mapping->getLEDObj(dome->struts[selectedEdge]->startLED)->z);
+					//printf("Edge->endLED:\nx:\t%f\ty:\t%f\tz:\t%f\n", shared->mapping->getLEDObj(dome->struts[selectedEdge]->endLED)->x, shared->mapping->getLEDObj(dome->struts[selectedEdge]->endLED)->y, shared->mapping->getLEDObj(dome->struts[selectedEdge]->endLED)->z);
+
+				}
+				
 				keyFlag += 1;
 				
 				shared->keyPressedPipe = 0;
@@ -176,3 +239,4 @@ void Calibration::run(bool real) {
 	}
 
 }
+

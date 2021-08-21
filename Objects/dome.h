@@ -10,6 +10,7 @@ public:
 	std::vector<LED*> leds;
 	int dataPipe = 0;
 	char bufferPipe[69];
+	void regenLEDs();
 };
 
 

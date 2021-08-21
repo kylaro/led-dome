@@ -6,20 +6,28 @@
 uint32_t offset_micros = 0;
 
 using namespace std;
+
+float distance3d(float x1, float y1, float z1, float x2, float y2, float z2) {
+	return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
+}
+
 void loadCalibration(Dome* dome) {
 	ifstream cal_file_in("ledcal69.txt");
 	string line;
-	uint32_t edge, led, confirmed;
+	uint32_t edge, led, confirmed, reversed;
 	if (cal_file_in.is_open()) {
 		printf("Loading cal...\n");
 		//while (getline(cal_file_in, line)) {
 		//	printf("%s",line);
 		//}
-		while (cal_file_in >> edge >> led >> confirmed) {
+		while (cal_file_in >> edge >> led >> confirmed >> reversed) {
 			//printf("%d %d %d\n", edge, led, confirmed);
 			dome->struts[edge]->startLED = led;
 			dome->struts[edge]->confirmed = confirmed;
+			dome->struts[edge]->reversed = reversed;
+			dome->struts[edge]->regenLEDs();
 		}
+		dome->regenLEDs();
 
 
 		cal_file_in.close();

@@ -10,11 +10,12 @@
 #include "Patterns/Calibration.h"
 #include <signal.h>
 #include <string>
+#include "Patterns/Debug.h"
 
 Dome* dome;
 Shared* shared;
 
-#define FRAME_RATE 69 //duh. suggestd max is 350 to ensure controller can handle all the packets
+#define FRAME_RATE 100 //duh. suggestd max is 350 to ensure controller can handle all the packets
 uint32_t framerate_nanos = (1 / ((float)FRAME_RATE)) * 1e9;
 uint32_t framerate_micros = (1 / ((float)FRAME_RATE)) * 1e6;
 uint32_t framerate_millis = (1 / ((float)FRAME_RATE)) * 1e3;
@@ -27,9 +28,9 @@ void giveEngineShared(Shared* sharedObject) {
 
 void init() {
 	initLEDController();
-
-	shared->mapping = new Mapping(dome);
 	loadCalibration(dome);
+	shared->mapping = new Mapping(dome);
+	
 }
 
 
@@ -62,6 +63,7 @@ void runEngine() {
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
 
+	//patterns.push_back(new Debug(shared));
 	patterns.push_back(new RainbowSweeps(shared));
 	patterns.push_back(new RGB(shared));
 

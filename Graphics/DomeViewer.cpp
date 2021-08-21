@@ -123,7 +123,7 @@ namespace easy3d {
 		Viewer::add_drawable(drawable);
 	}
 
-
+	bool printEStats = true;
 	//Running at about 133 FPS when nothing else
 	void DomeViewer::draw() const {
 		//drawable->set_point_size(5);
@@ -132,11 +132,26 @@ namespace easy3d {
 		colors.clear();
 		
 		if (shared->calibratingPipe) {
-
+			Strut* selectedEdge = myDome->struts[shared->selectedEdgePipe];
+			Node* selectedStartNode = selectedEdge->startNode;
+			Node* selectedEndNode = selectedEdge->endNode;
 			for (int e = 0; e < myDome->struts.size(); e++) {
 				Strut* edge = myDome->struts[e];
+				Node* startNode = edge->startNode;
+				Node* endNode = edge->endNode;
 				
 				if (e == shared->selectedEdgePipe) {
+					/*if (e == 32) {
+						if (printEStats) {
+							for (int i = 0; i < edge->numLEDs; i++) {
+								printf("\ni:%d\nindex:%d\nz:%f\n", i, edge->leds[i]->index, edge->leds[i]->z);
+							}
+							printEStats = false;
+						}
+					}
+					else {
+						printEStats = true;
+					}*/
 					colors.push_back(easy3d::vec3(0, 1, 0));//start pixel is green;
 					for (int i = 1; i < edge->numLEDs - 1; i++) {
 						colors.push_back(easy3d::vec3(0,0,1));
@@ -144,16 +159,28 @@ namespace easy3d {
 					colors.push_back(easy3d::vec3(1, 0, 0));
 				}
 				else {
+					int start = 0;
+					int end = 0;
+					if (startNode == selectedStartNode) {
+						colors.push_back(easy3d::vec3(0, 1, 0));
+						start = 1;
+					}
+					if (endNode == selectedEndNode) {
+						end = 1;
+					}
 					if (edge->confirmed) {
-						for (int i = 0; i < edge->numLEDs; i++) {
+						for (int i = 0+start; i < edge->numLEDs-end; i++) {
 							colors.push_back(easy3d::vec3(0, 0.5, 0));
 						}
 					}
 					else {
-						for (int i = 0; i < edge->numLEDs; i++) {
+						for (int i = 0+start; i < edge->numLEDs-end; i++) {
 							colors.push_back(easy3d::vec3(0, 0, 0));
 						}
 						
+					}
+					if (end == 1) {
+						colors.push_back(easy3d::vec3(1, 0, 0));
 					}
 					
 				}

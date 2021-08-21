@@ -15,11 +15,15 @@ public:
 private:
 	void help();
 	void handleBuffer();
+	uint32_t getBufferLED(int i);
 	int previousEdge = 0;
-	int selectedEdge = 0;
+	int selectedEdge = 33;
 	int selectedLED = 0;
+	int lastConfirmedLED = 0;
 	double selectedLED_dbl = 0;
 	int strutsLen = 0;
+	int orderedEdge_i = 0;
+	int edgecalidir = 1;
 	
 	bool quit = false;
 };
