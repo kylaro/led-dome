@@ -3,6 +3,7 @@
 #include "ledcontrol_tests.h"
 #include "e131_packet.h"
 #include "ledcontrol.h"
+#include "../Objects/dome.h"
 using namespace std;
 
 

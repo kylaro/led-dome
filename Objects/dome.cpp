@@ -21,6 +21,7 @@ bool isFake(int num) {
 }
 
 Dome::Dome() {
+	dataPipe = 0;
 	float radius = 2.1f;
 
 	for (int i = 0; i < NUM_VERTICES; i++) {
@@ -40,7 +41,8 @@ Dome::Dome() {
 
 	}
 
-	
+	int startLED = 0;
+	int numLEDs = 0;
 	for (int e = 0; e < NUM_EDGES; e++) {
 		int letter = edges[e][2];
 		int index = e;
@@ -50,24 +52,31 @@ Dome::Dome() {
 			continue;
 		}
 		Strut* newStrut = Graph::createStrut(nodes_array[e1], nodes_array[e2],letter, index);
-		int numLEDs = 0;
+		
 		switch (letter) {
 		case 0: //A
-			numLEDs = 60;
+			numLEDs = 35;
 			break;
 		case 1: //B
-			numLEDs = 70;
+			numLEDs = 42;
 			break;
 		case 2: //C
-			numLEDs = 80;
+			numLEDs = 47;
 			break;
 		case 3: //D
-			numLEDs = 90;
+			numLEDs = 49;
 			break;
 		}
-		newStrut->generateLEDs(0, numLEDs);
+		newStrut->generateLEDs(startLED, numLEDs);
 		struts_array[e] = newStrut;
+		startLED += numLEDs;
+		for (LED* l : newStrut->leds) {
+			this->leds.push_back(l);
+		}
 	}
+	int total = (startLED);
+	this->totalLEDs = total;
+	std::cout << "TOTAL LEDS = " << total << std::endl;
 	
 	
 

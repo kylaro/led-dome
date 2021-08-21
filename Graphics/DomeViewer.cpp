@@ -36,12 +36,8 @@ namespace easy3d {
 	bool DomeViewer::callback_event_keyboard(int key, int action, int modifiers) {
 		if (action == 1) {
 			printf("{key:%c , action:%d, modifiers:%d}\n", key, action, modifiers);
-			if (displaying) {
-				displaying = false;
-			}
-			else {
-				displaying = true;
-			}
+			
+			myDome->dataPipe = 1;
 		}
 		return false;
 	}
@@ -49,8 +45,7 @@ namespace easy3d {
 
 
 	void DomeViewer::initDome() {
-		myDome = new Dome();
-		initLEDController();
+		//myDome = new Dome();
 		for (Strut* edge : myDome->struts) {
 			for (LED* led : edge->leds) {
 				points.push_back(easy3d::vec3(led->x, led->y, led->z));
@@ -100,7 +95,7 @@ namespace easy3d {
 
 		drawable->update_vertex_buffer(points);
 		drawable->update_color_buffer(colors);
-		drawable->set_point_size(10);
+		drawable->set_point_size(12);
 		drawable->set_impostor_type(PointsDrawable::SPHERE);
 		drawable->set_coloring_method(State::SCALAR_FIELD);
 		drawable->set_lighting(false);

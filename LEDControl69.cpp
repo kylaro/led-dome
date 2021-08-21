@@ -6,7 +6,9 @@
 #include "Graphics/graphics_test.h"
 #include "Objects/dome.h"
 #include "Graphics/render.h"
+#include "PatternsPlus/pattern.h"
 #include <thread>
+#include "PatternsPlus/ledengine.h"
 using namespace std;
 
 int main()
@@ -14,9 +16,11 @@ int main()
 	cout << "Hello CMake." << endl;
 
 	//graphics_test();
-	
-	std::thread one(testChase);
-	domeToViewer();
+	Dome* theDome = new Dome();// one dome object for all
+
+	giveEngineDome(theDome);
+	std::thread ledthread( run );
+	domeToViewer(theDome);
 
 	return 0;
 }

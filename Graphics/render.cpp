@@ -9,7 +9,7 @@
 
 using namespace easy3d;
 
-int domeToViewer() {
+int domeToViewer(Dome * theDome) {
 
     /*
 	std::vector<easy3d::vec3> points;
@@ -40,6 +40,7 @@ int domeToViewer() {
     */
 
     DomeViewer viewer("LED Control 69");
+    viewer.myDome = theDome;
     viewer.initDome();
     Camera * cam = viewer.camera();// setOrientation(0, 0);
     cam->setOrientation(0, 0.3); // fix the dome being rotated incorrectly

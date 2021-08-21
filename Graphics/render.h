@@ -1,6 +1,6 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-int domeToViewer();
+int domeToViewer(Dome * theDome);
 
 #endif
