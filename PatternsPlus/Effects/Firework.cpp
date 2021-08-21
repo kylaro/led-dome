@@ -1,9 +1,10 @@
 #include "Firework.h"
 #include "HEXPulse.h"
+#include "Shimmer.h"
 void Firework::init() {
 
 	startNode = mapping->bottomNodes[rand()%mapping->bottomNodes.size()];//one of the last 15
-	curNode = mapping->llnodes_map[startNode->index][0];
+	curNode = mapping->llnodes_map[startNode->index][rand()% mapping->llnodes_map[startNode->index].size()];
 	initted = 1;
 	velocity = rand()%2+5;
 	color = { (rand()%100)/100.0,0,1 };
@@ -43,6 +44,13 @@ void Firework::run() {
 		//int node;
 		if ( velocity < 1.2 && curNode->nodeImpact()) {
 			int node = curNode->whatNode();
+			for (int i = 0; i < 160; i++) {
+				Shimmer* shim = new Shimmer(LEDs, mapping);
+				shim->duration = rand() % 600 + 50;
+				Strut* stert = mapping->dome->nodes[node]->struts[rand() % mapping->dome->nodes[node]->struts.size()];
+				shim->setStrut(stert);
+				engine->queueApply(shim);
+			}
 			HEXPulse * pulse = new HEXPulse(LEDs, mapping);
 			pulse->setNode(node);
 			engine->queueApply(pulse);

@@ -20,6 +20,7 @@ public:
 	Mapping* mapping;
 	EffectEngine* effectEngine;
 	LEDInterface* ledInterface;
+	char name[40] = "noname";
 private:
 	virtual void beforeRender();
 	virtual void render(int i, float x, float y, float z);

@@ -3,11 +3,12 @@
 #include "../pattern.h"
 
 
-class RGB : public Pattern {
+class RGBPat : public Pattern {
 public:
 	using Pattern::Pattern;
 
 	void run(bool real);
+	char name[40] = "RGB";
 };
 
 

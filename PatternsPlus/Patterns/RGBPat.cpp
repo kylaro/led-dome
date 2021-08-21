@@ -1,9 +1,9 @@
 
 
-#include "RGB.h"
+#include "RGBPat.h"
 #include "../helpers.h""
 double t = 0;
-void RGB::run(bool real) {
+void RGBPat::run(bool real) {
 	t = time(10000);
 	for (LED* led : mapping->phiLeds) {
 		uint32_t color = wheel(t*4000 + led->x + led->y + led->z);

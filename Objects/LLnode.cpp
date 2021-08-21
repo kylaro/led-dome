@@ -4,6 +4,8 @@ bool LLnode::isGood() {
 	return (this->prevNodes.size() > 0) && (this->nextNodes.size() > 0);
 }
 
+
+
 LLnode::LLnode(LED* led) {
 	//start them all as null
 	this->led = led;
@@ -81,6 +83,8 @@ void LLnode::setPrev(LLnode* prevNode) {
 	}
 	this->prevNodes.push_back(prevNode);
 }
+
+//return 1 if impact, 0 if not
 bool LLnode::nodeImpact() {
 	return neighbors.size() > 0;// nextNodes.size() > 1 || prevNodes.size() > 1;
 }
@@ -231,6 +235,28 @@ LLnode* LLnode::getNeighbor() {
 		return this->neighbors[rand() % neighbors.size()];
 	}
 	return NULL;
+}
+
+LLnode* LLnode::getNeighborAngle(double angle)
+{
+	xyz_f myXYZ = this->led->xyz;
+	xyz_f neighborXYZ;
+	double smallestDiff = 1000;
+	LLnode* selectedNeighbor = getNeighbor();
+
+	for (LLnode* neighbor : neighbors) {
+		neighborXYZ = neighbor->led->xyz;
+		double yDiff = myXYZ.y - neighborXYZ.y;
+		double xDiff = myXYZ.x - neighborXYZ.x;
+		double zDiff = myXYZ.z - neighborXYZ.z;
+		double neighborAngle = atan2(zDiff, xDiff);
+		double thisDiff = fabs(angle - neighborAngle);
+		if (thisDiff < smallestDiff) {
+			selectedNeighbor = neighbor;
+			smallestDiff = thisDiff;
+		}
+	}
+	return selectedNeighbor;
 }
 
 //NEXT is 1

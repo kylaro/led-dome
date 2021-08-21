@@ -6,7 +6,7 @@
 #include <thread>
 #include "pattern.h"
 #include "Patterns/RainbowSweeps.h"
-#include "Patterns/RGB.h"
+#include "Patterns/RGBPat.h"
 #include "Patterns/Calibration.h"
 #include <signal.h>
 #include <string>
@@ -14,7 +14,10 @@
 #include "EffectEngine.h"
 #include "Interface/LEDInterface.h"
 #include "Patterns/UsingEffects.h"
-#include "Patterns/ShowLL.h"
+#include "Patterns/TwinklyNight.h"
+#include "Patterns/Snake.h"
+#include "Patterns/Fireworks.h"
+#include "Patterns/Fireflies.h"
 
 Dome* dome;
 Shared* shared;
@@ -83,11 +86,13 @@ void runEngine() {
 	
 	//PUSH ALL THE PATTERNS WE WANT
 	//todo in the future, map specific keys to specific patterns?
-	patterns.push_back(new ShowLL(shared));
-	patterns.push_back(new UsingEffects(shared));
+	patterns.push_back(new Snake(shared));
+	patterns.push_back(new Fireflies(shared));
+	patterns.push_back(new TwinklyNight(shared));
+	patterns.push_back(new Fireworks(shared));
+	//patterns.push_back(new UsingEffects(shared));
 	patterns.push_back(new RainbowSweeps(shared));
-	
-	patterns.push_back(new RGB(shared));
+	patterns.push_back(new RGBPat(shared));
 
 	Pattern* realPattern = patterns[0];
 	Pattern* simulatedPattern = patterns[0];
@@ -151,6 +156,8 @@ void runEngine() {
 		//Then update leds
 		timer = nowMicros();
 		updateLEDs();
+		
+		
 		//printf("UPD=%d\n", nowMicros() - timer);
 		//WARN IF FREETIME IS LOW
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
@@ -178,6 +185,7 @@ void runEngine() {
 				//SIMULATED VS REAL:
 				if (shared->bufferPipe[0] == 0) {
 					//The buffer is empty, this is just enter
+					//printf("Real = simulation (%s)\n",realPattern->name);
 					printf("Real = simulation\n");
 					if (real_pattern_i != sim_pattern_i) {
 						effectEngineReal->clear();

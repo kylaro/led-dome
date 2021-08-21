@@ -1,5 +1,6 @@
 #include "HEXPulse.h"
 #include "../helpers.h"
+#include "../Interface/XBOX.h"
 void HEXPulse::setNode(int n) {
 	this->node = n;
 	this->nodeSet = 1;
@@ -9,6 +10,7 @@ void HEXPulse::init() {
 	if (nodeSet == 0) {
 		node = std::rand() % mapping->dome->nodes.size();
 	}
+	
 	
 	Node* myNode = mapping->dome->nodes[node];
 	if (myNode->index != node) {
@@ -71,12 +73,15 @@ void HEXPulse::init() {
 
 void HEXPulse::release() {
 	done = 1;// oops it wrapped
+
 	rgb_f off = { 0,0,0 };
 	for (ihsv_f k : leds) {
 		LEDs->setRGB(k.i, off);
 	}
+	xbox::vibrate(P1, 0);
 }
 void HEXPulse::run() {
+	
 	double duration = 1200.0;
 	if (initted == 0) {
 		init();
@@ -90,7 +95,7 @@ void HEXPulse::run() {
 	
 	
 	double timescale = time / duration;// 1 second fade
-
+	xbox::vibrate(P1, 1-timescale);
 	for (ihsv_f k : leds) {
 		k.hsv.v = 1-timescale;
 		k.hsv.s = timescale*8.0;

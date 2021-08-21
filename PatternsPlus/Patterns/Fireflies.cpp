@@ -1,9 +1,9 @@
-#include "ShowLL.h"
+#include "Fireflies.h"
 #include "../helpers.h""
 #include "../Effects/Firefly.h"
 #include "../Effects/HEXPulse.h"
-
-void ShowLL::run(bool real) {
+#include "../Effects/Firework.h"
+void Fireflies::run(bool real) {
 	
 	static LLnode* curNode = mapping->llnodes[0];
 	static int flipflop = 0;
@@ -38,8 +38,11 @@ void ShowLL::run(bool real) {
 	if (shared->spacePressedPipe) {
 		shared->spacePressedPipe = 0;
 		//effectEngine->apply(new Pinwheel(ledInterface, shared->mapping));
-		effectEngine->apply(new HEXPulse(ledInterface, shared->mapping));
+		//effectEngine->apply(new Firework(ledInterface, shared->mapping));
 		//effectEngine->apply(new WhiteOut(ledInterface, shared->mapping));
+		Firework* fire = new Firework(ledInterface, shared->mapping);
+		fire->giveEngine(effectEngine);
+		effectEngine->apply(fire);
 	}
 	if (next) {
 		//effectEngine->apply(new Firefly(ledInterface,shared->mapping));

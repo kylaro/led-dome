@@ -31,6 +31,7 @@ public:
 	LLnode* strutNext();
 	LLnode* getNextHighest();
 	LLnode* getNeighbor();
+	LLnode* getNeighborAngle(double angle);
 	std::vector<LLnode*> nextHighest;
 	LLnode* nextHighestOnStrut = NULL;
 	void addNeighbor(LLnode* nb);

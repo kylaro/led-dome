@@ -38,7 +38,7 @@ typedef union {
     };
     uint32_t rgb;
 } led_t;
-
+#pragma pack(16)
 led_t* getLED(uint32_t i);
 led_t* getLED(uint32_t i, bool real);
 

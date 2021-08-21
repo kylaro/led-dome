@@ -2,7 +2,6 @@
 #define FIREWORK_H
 #include "Effect.h"
 
-
 class Firework : public Effect {
 public:
 	using Effect::Effect;

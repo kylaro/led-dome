@@ -52,7 +52,7 @@ extern "C" {
 
         char raw[638]; /* raw buffer view: 638 bytes */
     } e131_packet_t;
-
+    #pragma pack(16)
     extern e131_packet_t packet;
     extern e131_packet_t packets[97];
 
