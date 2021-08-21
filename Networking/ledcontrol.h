@@ -19,19 +19,21 @@ uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue);
 uint32_t wheel(uint8_t pos);
 
 void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue);
-void setLED(uint32_t i , uint32_t rgb);// for ppl who aint got time for 3 rgb colors
+void setLED(uint32_t i, uint32_t rgb);// for ppl who aint got time for 3 rgb colors
 
 
-
-typedef union{
+typedef union {
+#pragma pack(1)
     struct {
         uint8_t b;
         uint8_t g;
         uint8_t r;
-        uint8_t a;// brightness control?
-    } __attribute__((packed));
+        uint8_t aZ;// brightness control?
+    };
     uint32_t rgb;
 } led_t;
+
+led_t* getLED(uint32_t i);
 
 
 #endif //LEDCONTROL_LEDCONTROL_H

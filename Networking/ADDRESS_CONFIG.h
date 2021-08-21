@@ -1,0 +1,14 @@
+//
+// Created by kylaro on 2/6/2021.
+//
+
+#ifndef LEDCONTROL_ADDRESSCONFIG_H
+#define LEDCONTROL_ADDRESSCONFIG_H
+
+#define HOSTNAME_WIN "192.168.86.132"
+#define PORT_WIN 5568
+#define PACKET_LENGTH_WIN 638
+
+
+
+#endif //LEDCONTROL_UDPSEND_WINDOWS_H

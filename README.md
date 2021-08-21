@@ -1,1 +1,0 @@
-# led-dome project
