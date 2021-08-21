@@ -4,7 +4,7 @@
 #include "shared.h"
 void giveEngineDome(Dome * theDome);
 void giveEngineShared(Shared* sharedObject);
-void run();
+void runEngine();
 
 
 #endif

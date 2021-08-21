@@ -12,6 +12,7 @@ public:
 	std::vector<LED*> phiLeds; // 1 side rotation
 	std::vector<LED*> tanLeds; // 2 sided rotation
 	
+	
 };
 
 #endif

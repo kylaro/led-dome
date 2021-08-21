@@ -9,14 +9,15 @@ Pattern::Pattern( Shared * sharedObject ) {
 	this->mapping = sharedObject->mapping;
 }
 
+/*
 std::thread Pattern::start() {
-	std::thread pat(&Pattern::run, this);
-	return pat;
+	//std::thread pat(&Pattern::run, this);
+	//return pat;
 	
-}
+}*/
 
 
-void Pattern::run() {
+void Pattern::run(bool real) {
 
 	while (1) {
 		beforeRender();
@@ -37,8 +38,4 @@ void Pattern::beforeRender() {
 void Pattern::render(int i, float x, float y, float z) {
 	
 	setLED(i, wheel(i) );
-}
-
-void Pattern::signalHandler(int sigNum) {
-	exit(69);
 }

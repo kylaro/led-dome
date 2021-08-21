@@ -42,6 +42,7 @@ namespace easy3d {
 		printf("->\n%s\n", shared->bufferPipe);
 		shared->submitPipe = 1;
 		shared->keyPressedPipe = 0; // we are treating submission as not a keypress..
+		buffer_i = 0;
 	}
 
 	bool DomeViewer::callback_event_keyboard(int key, int action, int modifiers) {
@@ -49,12 +50,9 @@ namespace easy3d {
 			switch (key) {
 				case 257:
 					//printf("ENTER");
-					shared->bufferPipe[buffer_i] = 0;
+					
 					submitBuffer();
-					while (buffer_i != 0) {
-						shared->bufferPipe[buffer_i] = 0;
-						buffer_i -= 1;
-					}
+					
 					buffer_i = 0;
 					break;
 				case 259:
@@ -78,12 +76,13 @@ namespace easy3d {
 						key += 32;//convert to lower case for all letters lol i hate all this caps
 					}
 					shared->bufferPipe[buffer_i] = key;
-					buffer_i = buffer_i < 67 ? buffer_i + 1 : 67;//hope this never happens - typing more than 90 without submitting lol
+					buffer_i = buffer_i < BUFFER_LEN-2 ? buffer_i + 1 : BUFFER_LEN-2;//hope this never happens - typing more than 90 without submitting lol
 					printf("%c", key);
+					//shared->bufferPipe[buffer_i] = key;
 			}
 			//printf("{key:%d , action:%d, modifiers:%d}\n", key, action, modifiers);
 			
-			shared->bufferPipe[buffer_i] = key;
+			
 			shared->keyPressedPipe = key;
 		}
 		return false;
@@ -161,7 +160,7 @@ namespace easy3d {
 			for (LED* led : edge->leds) {
 				//points.push_back(easy3d::vec3(led->x, led->y, led->z));
 				//colors.push_back(easy3d::vec3(edge->letter == 1 ? 1 : edge->letter == 2 ? 0.5 : 0, 1 - edge->letter / 4.0f, edge->letter / 4.0f));
-				colors.push_back(easy3d::vec3(getLED(led->index)->r / 256.0f, getLED(led->index)->g / 256.0f, getLED(led->index)->b / 256.0f));
+				colors.push_back(easy3d::vec3(getLED(led->index, shared->viewReal)->r / 256.0f, getLED(led->index, shared->viewReal)->g / 256.0f, getLED(led->index, shared->viewReal)->b / 256.0f));
 			}
 		}
 		now = std::chrono::high_resolution_clock::now();

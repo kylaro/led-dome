@@ -7,7 +7,7 @@ class RainbowSweeps : public Pattern {
 public:
 	using Pattern::Pattern;
 
-	void run();
+	void run(bool real);
 };
 
 

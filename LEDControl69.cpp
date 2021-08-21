@@ -28,7 +28,7 @@ int main()
 
 	giveEngineShared(sharedObject);
 
-	std::thread ledthread( run );
+	std::thread ledthread( runEngine);
 	ledthread.detach();
 	domeToViewer(theDome, sharedObject);
 

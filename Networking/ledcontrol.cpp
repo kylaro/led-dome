@@ -11,6 +11,7 @@
 
 #define MAX_LEDS 16384
 led_t leds[MAX_LEDS];
+led_t leds_sim[MAX_LEDS];
 
 
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue) {
@@ -57,11 +58,32 @@ led_t* getLED(uint32_t i) {
     return &leds[i];
 }
 
+led_t* getLED(uint32_t i, bool real) {
+    if (real) {
+        return getLED(i);
+    }
+    else {
+        return &leds_sim[i];
+    }
+
+}
+
 void clearLEDs() {
     for (int i = 0; i < MAX_LEDS; i++) {
         setLED(i,0);
     }
     updateLEDs();
+
+}
+void clearLEDs(bool real) {
+    if (real) {
+        clearLEDs();
+        return;
+    }
+    //if simulated
+    for (int i = 0; i < MAX_LEDS; i++) {
+        setLED(i, 0, false);
+    }
 
 }
 
@@ -79,6 +101,29 @@ void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue) {
     leds[i].g = green;
     leds[i].b = blue;
     setLED(i);
+}
+
+void setLED(uint32_t i, uint32_t rgb, bool real) {
+    if (real) {
+        setLED(i, rgb);
+    }
+    else {
+        //simulated led;
+        leds_sim[i].rgb = rgb;
+    }
+    
+}
+void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue, bool real) {
+    if (real) {
+        setLED(i, red, green, blue);
+    }
+    else {
+        //simulated led;
+        leds_sim[i].r = red;
+        leds_sim[i].g = green;
+        leds_sim[i].b = blue;
+    }
+   
 }
 
 void initLEDController() {
@@ -117,4 +162,12 @@ void updateLEDs() {
         }
     }
 
+}
+
+
+void updateLEDs(bool real) {
+    if (real) {
+        updateLEDs();
+    }
+    //otherwise it is simulated so no need to send data out anywhere.
 }

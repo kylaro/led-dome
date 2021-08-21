@@ -1,7 +1,7 @@
 
 #ifndef SHARED_H
 #define SHARED_H
-
+#define BUFFER_LEN 69
 #include "mapping.h"
 #include "../Objects/dome.h"
 //Make this have semaphors or some kind of lock ? ? ?
@@ -14,12 +14,14 @@ public:
 	int submitPipe = 0;
 	int keyPressedPipe = 0;
 	int spacePressedPipe = 0;
-	char bufferPipe[69];
+	char bufferPipe[BUFFER_LEN];
 	int directionPipe = 0; // -1 for back, 0 for none, 1 for forward
+	bool viewReal = true;
 
 	Mapping* mapping;
 	Dome* dome;
 
+	void clearBuffer();
 	//inputs to viewer:
 	//maybe some kind of filter or something? idk exactly what will be input yet
 

@@ -20,7 +20,7 @@ uint32_t philed = 800;
 uint32_t philed2 = 0;
 uint32_t tanled = 1200;
 uint32_t tanled2 = 0;
-void RainbowSweeps:: run() {
+void RainbowSweeps:: run(bool real) {
 	
 
 
@@ -52,8 +52,8 @@ void RainbowSweeps:: run() {
 		philed2 %= mapping->phiLeds.size();
 
 
-		setLED(mapping->phiLeds[philed]->index, wheel(k / 10));
-		setLED(mapping->phiLeds[philed2]->index, 0);
+		setLED(mapping->phiLeds[philed]->index, wheel(k / 10), real);
+		setLED(mapping->phiLeds[philed2]->index, 0, real);
 		break;
 	case 1:
 		xled++;
@@ -62,8 +62,8 @@ void RainbowSweeps:: run() {
 		xled2 %= mapping->xLeds.size();
 
 
-		setLED(mapping->xLeds[xled]->index, wheel(k / 10));
-		setLED(mapping->xLeds[xled2]->index, 0);
+		setLED(mapping->xLeds[xled]->index, wheel(k / 10), real);
+		setLED(mapping->xLeds[xled2]->index, 0, real);
 		break;
 	case 2:
 		yled++;
@@ -72,8 +72,8 @@ void RainbowSweeps:: run() {
 		yled2 %= mapping->yLeds.size();
 
 
-		setLED(mapping->yLeds[yled]->index, wheel(k / 10));
-		setLED(mapping->yLeds[yled2]->index, 0);
+		setLED(mapping->yLeds[yled]->index, wheel(k / 10), real);
+		setLED(mapping->yLeds[yled2]->index, 0, real);
 		break;
 	case 3:
 		zled++;
@@ -82,8 +82,8 @@ void RainbowSweeps:: run() {
 		zled2 %= mapping->zLeds.size();
 
 
-		setLED(mapping->zLeds[zled]->index, wheel(k / 10));
-		setLED(mapping->zLeds[zled2]->index, 0);
+		setLED(mapping->zLeds[zled]->index, wheel(k / 10), real);
+		setLED(mapping->zLeds[zled2]->index, 0, real);
 		break;
 	case 4:
 		tanled++;
@@ -92,8 +92,8 @@ void RainbowSweeps:: run() {
 		tanled2 %= mapping->tanLeds.size();
 
 
-		setLED(mapping->tanLeds[tanled]->index, wheel(k / 10));
-		setLED(mapping->tanLeds[tanled2]->index, 0);
+		setLED(mapping->tanLeds[tanled]->index, wheel(k / 10), real);
+		setLED(mapping->tanLeds[tanled2]->index, 0, real);
 		break;
 
 
@@ -106,7 +106,7 @@ void RainbowSweeps:: run() {
 	delay2(100000);
 	//std::cout << time(10e3) << std::endl;
 	//time(100);
-	updateLEDs();
+	updateLEDs( real);
 
 	//setLED(i, wheel(k));
 	i++;
