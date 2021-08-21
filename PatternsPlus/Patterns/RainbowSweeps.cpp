@@ -9,20 +9,14 @@
 
 int32_t i = 0;
 uint32_t k = 0;
-uint32_t xled = 1200;
-uint32_t xled2 = 0;
-uint32_t yled = 1200;
-uint32_t yled2 = 0;
-uint32_t zled = 1200;
-uint32_t zled2 = 0;
+
 int32_t mode = 0;
-uint32_t philed = 800;
-uint32_t philed2 = 0;
-uint32_t tanled = 1200;
-uint32_t tanled2 = 0;
+
+uint32_t numLeds = 0;
+
 void RainbowSweeps:: run(bool real) {
 	
-
+	double t = time(3000);
 
 	//pats.push_back(rainsweep);
 
@@ -46,54 +40,74 @@ void RainbowSweeps:: run(bool real) {
 
 	switch (mode) {
 	case 0:
-		philed++;
-		philed2++;
-		philed %= mapping->phiLeds.size();
-		philed2 %= mapping->phiLeds.size();
+		
+		numLeds = mapping->phiLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->phiLeds[i]->index;
+			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
 
+			setLED(index, (color), real);
+		}
 
-		setLED(mapping->phiLeds[philed]->index, wheel(k / 10), real);
-		setLED(mapping->phiLeds[philed2]->index, 0, real);
 		break;
 	case 1:
-		xled++;
-		xled2++;
-		xled %= mapping->xLeds.size();
-		xled2 %= mapping->xLeds.size();
+		numLeds = mapping->xLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->xLeds[i]->index;
+			uint32_t color = wheel(t*256+256.0*(i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
+			
+			setLED(index, (color), real);
+		}
 
-
-		setLED(mapping->xLeds[xled]->index, wheel(k / 10), real);
-		setLED(mapping->xLeds[xled2]->index, 0, real);
 		break;
 	case 2:
-		yled++;
-		yled2++;
-		yled %= mapping->yLeds.size();
-		yled2 %= mapping->yLeds.size();
+		numLeds = mapping->yLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->yLeds[i]->index;
+			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
 
+			setLED(index, (color), real);
+		}
 
-		setLED(mapping->yLeds[yled]->index, wheel(k / 10), real);
-		setLED(mapping->yLeds[yled2]->index, 0, real);
 		break;
 	case 3:
-		zled++;
-		zled2++;
-		zled %= mapping->zLeds.size();
-		zled2 %= mapping->zLeds.size();
+		numLeds = mapping->zLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->zLeds[i]->index;
+			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
 
-
-		setLED(mapping->zLeds[zled]->index, wheel(k / 10), real);
-		setLED(mapping->zLeds[zled2]->index, 0, real);
+			setLED(index, (color), real);
+		}
+		
 		break;
 	case 4:
-		tanled++;
-		tanled2++;
-		tanled %= mapping->tanLeds.size();
-		tanled2 %= mapping->tanLeds.size();
+		numLeds = mapping->tanLeds.size();
+		for (int i = 0; i < numLeds; i++) {
+			int index = mapping->tanLeds[i]->index;
+			uint32_t color = wheel(t * 256 + 256.0 * (i / (double)numLeds));
+			color = getB(color);// we now have an intensity 0-255
+			color = sharpenRGB(color, 200);
+			color = color > 0;
+			color = wheel(-t * 256 + i / 8) * color;
 
-
-		setLED(mapping->tanLeds[tanled]->index, wheel(k / 10), real);
-		setLED(mapping->tanLeds[tanled2]->index, 0, real);
+			setLED(index, (color), real);
+		}
 		break;
 
 
@@ -103,7 +117,7 @@ void RainbowSweeps:: run(bool real) {
 
 
 
-	delay2(100000);
+	//delay2(100000);
 	//std::cout << time(10e3) << std::endl;
 	//time(100);
 	updateLEDs( real);

@@ -6,10 +6,10 @@
 #define LEDCONTROL_LEDCONTROL_H
 
 #include <cstdint>
-
 #define RED 0xFF0000
 #define GREEN 0x00FF00
 #define BLUE 0x0000FF
+
 
 #define BRIGHTNESS_DIVIDE 4// divide eache leds max RGB by this, ex. if 3 then (255/3 = 80ish)
 

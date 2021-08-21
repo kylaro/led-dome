@@ -12,7 +12,8 @@
 #include "PatternsPlus/mapping.h"
 using namespace std;
 
-
+//count lines of code in powershell lol:
+//(gci -include *.c,*.cpp,*.h -recurse | select-string .).Count
 int main()
 {
 

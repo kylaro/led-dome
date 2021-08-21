@@ -93,14 +93,19 @@ void setLED(uint32_t i) {
 }
 
 void setLED(uint32_t i, uint32_t rgb) {
+    if (leds[i].rgb != rgb) {
+        setLED(i);//only set on change
+    }
     leds[i].rgb = rgb;
-    setLED(i);
+    
 }
 void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue) {
+    if (leds[i].r != red && leds[i].g != green && leds[i].b != blue) {
+        setLED(i);//only set on change
+    }
     leds[i].r = red;
     leds[i].g = green;
     leds[i].b = blue;
-    setLED(i);
 }
 
 void setLED(uint32_t i, uint32_t rgb, bool real) {

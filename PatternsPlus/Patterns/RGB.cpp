@@ -1,18 +1,18 @@
 
 
 #include "RGB.h"
-
-uint32_t count = 0;
+#include "../helpers.h""
+double t = 0;
 void RGB::run(bool real) {
-	count++;
+	t = time(10000);
 	for (LED* led : mapping->phiLeds) {
-		uint32_t color = wheel(count + led->x + led->y + led->z);
-		if (count % 10000 > 6660) {
+		uint32_t color = wheel(t*4000 + led->x + led->y + led->z);
+		if (t > 0.66) {
 			color = rDiv(color, 100);
 			color = bDiv(color, 100);
 			setLED(led->index, color, real);
 		}
-		else if (count % 10000 > 3330) {
+		else if (t > 0.33) {
 			color = gDiv(color, 100);
 			color = rDiv(color, 100);
 			setLED(led->index, color, real);
@@ -24,7 +24,7 @@ void RGB::run(bool real) {
 		}
 		
 	}
-	delay2(1000000);
+	//delay2(1000000);
 	updateLEDs(real);
 	
 }
