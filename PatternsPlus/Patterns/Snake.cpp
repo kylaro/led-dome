@@ -31,12 +31,19 @@ void Snake::run(bool real) {
         }
         lookaheadSet = 1;
         //this is all i need to change..
-        double angle = xbox::getLeftThumbstickAngle(P1);
-        nextNode = last->getNeighborAngle(angle);
+        double angle = xbox::getLeftThumbAngle(P1);
+        if (xbox::getLeftThumbActive(P1)) {
+            nextNode = last->getNeighborAngle(angle);
+            
+        }
+        else {
+            nextNode = last->getNeighbor();
+        }
+        
     //}
     
-    hsv_f on = { 0.66,1,1 };
-    hsv_f rainbow = { (rand() % 3)/3.0, 1, 1 };
+    hsv_f on = { 0.33,1,1 };
+    hsv_f rainbow = { time(200), 1, 1 };
     //ledInterface->setRGB(curNode->led, off);
     curNode = curNode->getNextDir(dir);
     if (curNode == NULL) {
@@ -57,7 +64,12 @@ void Snake::run(bool real) {
     ihsv_f trail_hsv = { curNode->led->index, on };
     trail.push_back(trail_hsv);
 
-    ledInterface->setHSV(nextNode->led, rainbow);
+    if (xbox::getLeftThumbActive(P1)) {
+        ledInterface->setHSV(nextNode->led, rainbow);
+    }
+    else {
+        ledInterface->setRGB(nextNode->led, off);
+    }
     
     prevNode = curNode;
     

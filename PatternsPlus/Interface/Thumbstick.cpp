@@ -4,7 +4,9 @@
 Thumbstick::Thumbstick(CXBOXController* controller) {
 	this->controller = controller;
 }
-
+int Thumbstick::getActive() {
+	return (getX() != 0 || getY() != 0);
+}
 double Thumbstick::getAngle() {//-pi to pi
 	double angle = atan2(getY(), getX());
 	printf("%f\n",angle);

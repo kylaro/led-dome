@@ -13,9 +13,9 @@ namespace xbox {
 	int anyHeld(int p);
 
 
-	double getLeftThumbstickX(int p);
-	double getLeftThumbstickAngle(int p);
-
+	double getLeftThumbX(int p);
+	double getLeftThumbAngle(int p);
+	int getLeftThumbActive(int p);
 
 	int getDpadUpPress(int p);
 	int getDpadUpHeld(int p);

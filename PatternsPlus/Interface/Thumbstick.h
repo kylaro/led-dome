@@ -7,6 +7,8 @@ class Thumbstick {
 public:
 	Thumbstick(CXBOXController* controller);
 
+	int getActive();
+
 	double x = 0;
 	double y = 0;
 	CXBOXController* controller;

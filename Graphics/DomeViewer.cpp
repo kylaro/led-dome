@@ -118,7 +118,7 @@ namespace easy3d {
 
 		drawable->update_vertex_buffer(points);
 		drawable->update_color_buffer(colors);
-		drawable->set_point_size(12);
+		drawable->set_point_size(15);//12
 		drawable->set_impostor_type(PointsDrawable::SPHERE);
 		drawable->set_coloring_method(State::SCALAR_FIELD);
 		drawable->set_lighting(false);

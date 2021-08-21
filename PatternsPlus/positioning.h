@@ -8,4 +8,10 @@ typedef struct {
 	double z;
 } xyz_f;
 
+typedef struct {
+	double r;
+	double theta;
+	double phi;
+} sph_f;
+
 #endif

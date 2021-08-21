@@ -10,6 +10,7 @@ namespace xbox {
 		Player1 = new CXBOXController(P1);
 		Player2 = new CXBOXController(P2);
 	}
+
 	CXBOXController* getP(int p) {
 		CXBOXController* Player;
 		if (p == P1) {
@@ -30,10 +31,10 @@ namespace xbox {
 
 		if (Player->IsConnected()) {
 			return Player;
-		}
+		}/*
 		else {
 			printf("new joystick\n");
-			//free(Player);
+			free(Player);
 			Player = new CXBOXController(p);
 			if (Player->IsConnected()) {
 				return Player;
@@ -41,7 +42,7 @@ namespace xbox {
 			else {
 				return NULL;
 			}
-		}
+		}*/
 
 	}
 	int getPress(int p, int button) {
@@ -230,13 +231,22 @@ namespace xbox {
 		//return 0;
 	}
 
-	double getLeftThumbstickAngle(int p) {
+	double getLeftThumbAngle(int p) {
 		CXBOXController* Player = getP(p);
 		if (Player == NULL) {
 			return 0;
 		}
 		return Player->getLeftThumbAngle();
 		//return 0;
+	}
+
+	int getLeftThumbActive(int p) {
+		CXBOXController* Player = getP(p);
+		if (Player == NULL) {
+			return 0;
+		}
+		return Player->getLeftThumbActive();
+			
 	}
 
 

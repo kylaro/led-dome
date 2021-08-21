@@ -50,6 +50,10 @@ double CXBOXController::getLeftThumbX() {
     return this->leftStick->getX();
 }
 
+int CXBOXController::getLeftThumbActive() {
+    return this->leftStick->getActive();
+}
+
 
 int CXBOXController::getButtonHeld(int button) {
     if (this->IsConnected()) {
