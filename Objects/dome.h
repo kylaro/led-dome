@@ -9,6 +9,7 @@ public:
 	int totalLEDs = -1;
 	std::vector<LED*> leds;
 	int dataPipe = 0;
+	char bufferPipe[69];
 };
 
 

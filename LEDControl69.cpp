@@ -9,18 +9,28 @@
 #include "PatternsPlus/pattern.h"
 #include <thread>
 #include "PatternsPlus/ledengine.h"
+#include "PatternsPlus/mapping.h"
 using namespace std;
+
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+
+	
+
+
+	//cout << "Hello CMake." << endl;
 
 	//graphics_test();
 	Dome* theDome = new Dome();// one dome object for all
+	Shared* sharedObject = new Shared();//a shared object to transfer data between threads
+	sharedObject->dome = theDome;
 
-	giveEngineDome(theDome);
+	giveEngineShared(sharedObject);
+
 	std::thread ledthread( run );
-	domeToViewer(theDome);
+	ledthread.detach();
+	domeToViewer(theDome, sharedObject);
 
 	return 0;
 }

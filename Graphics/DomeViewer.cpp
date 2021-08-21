@@ -5,6 +5,7 @@
 #include <easy3d/core/point_cloud.h>
 #include <easy3d/renderer/drawable_points.h>
 #include "../Networking/ledcontrol.h"
+#include <chrono>
 namespace easy3d {
 
 	std::vector<vec3> colors;
@@ -34,11 +35,13 @@ namespace easy3d {
 		modifiers: 1 is shift, 2 is control, 4 is alt
 	*/
 
-	char buffer[100];
+	
 	int buffer_i = 0;
 
-	void submitBuffer() {
-		printf("->\n%s\n",buffer);
+	void DomeViewer::submitBuffer() {
+		printf("->\n%s\n", shared->bufferPipe);
+		shared->submitPipe = 1;
+		shared->keyPressedPipe = 0; // we are treating submission as not a keypress..
 	}
 
 	bool DomeViewer::callback_event_keyboard(int key, int action, int modifiers) {
@@ -46,29 +49,42 @@ namespace easy3d {
 			switch (key) {
 				case 257:
 					//printf("ENTER");
-					buffer[buffer_i] = 0;
+					shared->bufferPipe[buffer_i] = 0;
 					submitBuffer();
 					while (buffer_i != 0) {
-						buffer[buffer_i] = 0;
+						shared->bufferPipe[buffer_i] = 0;
 						buffer_i -= 1;
 					}
 					buffer_i = 0;
 					break;
 				case 259:
 					//printf("BACKSPACE");
-					buffer[buffer_i] = 0;
+					shared->bufferPipe[buffer_i] = 0;
 					buffer_i = buffer_i > 0 ? buffer_i - 1 : 0;
 					printf("\b \b");
 					break;
+				case 262: // right arrow
+				case 265: // up arrow
+					shared->directionPipe = 1;
+					break;
+				case 264: // down arrow
+				case 263: // left arrow
+					shared->directionPipe = -1;
+					break;
+				case 32: ///spacebar
+					shared->spacePressedPipe = 1;
 				default:
-					buffer[buffer_i] = key;
-					buffer_i = buffer_i < 90 ? buffer_i + 1 : 90;//hope this never happens - typing more than 90 without submitting lol
+					if (key >= 65 && key <= 90) {
+						key += 32;//convert to lower case for all letters lol i hate all this caps
+					}
+					shared->bufferPipe[buffer_i] = key;
+					buffer_i = buffer_i < 67 ? buffer_i + 1 : 67;//hope this never happens - typing more than 90 without submitting lol
 					printf("%c", key);
 			}
 			//printf("{key:%d , action:%d, modifiers:%d}\n", key, action, modifiers);
 			
-			buffer[buffer_i] = key;
-			myDome->dataPipe = 1;
+			shared->bufferPipe[buffer_i] = key;
+			shared->keyPressedPipe = key;
 		}
 		return false;
 	}
@@ -138,7 +154,8 @@ namespace easy3d {
 	//Running at about 133 FPS when nothing else
 	void DomeViewer::draw() const {
 		//drawable->set_point_size(5);
-		
+		auto now = std::chrono::high_resolution_clock::now();
+		uint32_t beginNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
 		colors.clear();
 		for (Strut* edge : myDome->struts) {
 			for (LED* led : edge->leds) {
@@ -147,11 +164,23 @@ namespace easy3d {
 				colors.push_back(easy3d::vec3(getLED(led->index)->r / 256.0f, getLED(led->index)->g / 256.0f, getLED(led->index)->b / 256.0f));
 			}
 		}
+		now = std::chrono::high_resolution_clock::now();
+		uint32_t endNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+		uint32_t elapsed = endNanos - beginNanos;
+		//std::cout << elapsed << "\t\t color pushing back " << std::endl;
+		now = std::chrono::high_resolution_clock::now();
+		beginNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+
 
 		drawable->update_color_buffer(colors);
 
+
 		Viewer::update();
 		Viewer::draw();
+		now = std::chrono::high_resolution_clock::now();
+		endNanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+		elapsed = endNanos - beginNanos;
+		//std::cout << elapsed << "\t\t other drawing time" << std::endl;
 	}
 
 

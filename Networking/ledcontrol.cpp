@@ -9,7 +9,8 @@
 #define NUM_UNIVERSES 97 // This is the max number of universes for 16384 pixels
 #define LEDS_PER_UNIVERSE 170
 
-led_t leds[16384];
+#define MAX_LEDS 16384
+led_t leds[MAX_LEDS];
 
 
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue) {
@@ -54,6 +55,14 @@ uint16_t getChannel(uint32_t i) {
 
 led_t* getLED(uint32_t i) {
     return &leds[i];
+}
+
+void clearLEDs() {
+    for (int i = 0; i < MAX_LEDS; i++) {
+        setLED(i,0);
+    }
+    updateLEDs();
+
 }
 
 //everything has already been done, we just gotta update the array and universe modified thing

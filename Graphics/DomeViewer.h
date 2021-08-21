@@ -5,6 +5,7 @@
 #include <easy3d/util/timer.h>
 #include "../Objects/dome.h"
 #include <easy3d/renderer/drawable_points.h>
+#include "../PatternsPlus/shared.h"
 
 namespace easy3d {
 
@@ -25,6 +26,7 @@ namespace easy3d {
 		//void drawWrapper();
 		void initDome();
 		Dome* myDome;
+		Shared* shared;
 		std::vector<easy3d::vec3> points;
 		//std::vector<easy3d::vec3> colors;
 		PointsDrawable* drawable;
@@ -33,6 +35,7 @@ namespace easy3d {
 		
 
 	protected:
+		void submitBuffer();
 		// Single global context by default, but can be overridden by the user
 		bool callback_event_keyboard(int key, int action, int modifiers) override;
 

@@ -17,7 +17,7 @@ void updateLEDs();// Sends the current packet to the leds
 void initLEDController(); // TODO add IP address argument
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue);
 uint32_t wheel(uint8_t pos);
-
+void clearLEDs();
 void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue);
 void setLED(uint32_t i, uint32_t rgb);// for ppl who aint got time for 3 rgb colors
 
