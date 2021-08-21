@@ -17,10 +17,10 @@ led_t ledbuffer[MAX_LEDS];
 
 
 
-std::vector<int> dirtyUnivs;
+
 uint8_t seqCounter = 0;
 
-
+std::vector<int> dirtyUnivs;
 uint32_t dirtyMap[4];
 
 void clearDirtyMap() {
@@ -36,6 +36,14 @@ int getDirtyMap(uint32_t univ) {
 void setDirtyMap(uint32_t univ) {
     dirtyMap[univ / 32] |= 1 << (univ % 32);
 }
+
+void setDirtyMap0(uint32_t univ) {
+    dirtyMap[univ / 32] &= ~(1 << (univ % 32));
+}
+
+
+
+
 
 uint32_t rgbToColor(int32_t red, int32_t green, int32_t blue) {
     return ((red) << 16) | ((green) << 8) | (blue);
@@ -95,14 +103,18 @@ led_t* getLED(uint32_t i, bool real) {
 
 //everything has already been done, we just gotta update the array and universe modified thing
 void setLED(uint32_t i) {
-    uint16_t uni = getUniverse(i);
-    if (!getDirtyMap(uni)) {
-        dirtyUnivs.push_back(uni);
+    if (DYNAMIC_PACKETS) {
+        uint16_t uni = getUniverse(i);
+        if (!getDirtyMap(uni)) {
+            dirtyUnivs.push_back(uni);
+        }
+
+        setDirtyMap(uni);
+
+        modified_universes[uni] = 1; // mark it as changed so we can send an update packet
     }
    
-    setDirtyMap(uni);
-   
-    modified_universes[uni] = 1; // mark it as changed so we can send an update packet
+    
 }
 
 void clearLEDs() {
@@ -191,17 +203,69 @@ uint32_t ledFromUniChan(uint16_t universe, uint16_t channel) {
     return (universe - 1) * 170 + channel / 3;
 }
 
-//Sends the packet to any universe that had a modification to it's leds like the dirty little bits they are
-void updateLEDs() {
-
-    for (int univ : dirtyUnivs) {
+void updateLEDsEXP() {
+    static int i = 0;
+    i++;
+    i %= 4;
+    uint32_t map = dirtyMap[i];
+    uint32_t univ = i * 32;
+    int k = 0;
+    while (k < 32) {
+        if (map & 1) {
+            setSeq(univ, seqCounter);
+            udpSend_windows(packets[univ].raw);
+            seqCounter++;
+        }
+        map >>= 1;
+        univ++;
+        k++;
+    }
+    dirtyMap[i] = 0;
+}
+void updateLEDsLIMIT() {
+    std::vector<int>::iterator it = dirtyUnivs.begin();
+    int count = 35;
+    while (it != dirtyUnivs.end())
+    {
+        count--;
+        if (count == 0) {
+            break;
+        }
+        int univ = *it;
         setSeq(univ, seqCounter);
         udpSend_windows(packets[univ].raw);
         seqCounter++;
+        it = dirtyUnivs.erase(it);
+        setDirtyMap0(univ);
     }
-    dirtyUnivs.clear();
-    clearDirtyMap();
+    //clearDirtyMap();
+}
+//Sends the packet to any universe that had a modification to it's leds like the dirty little bits they are
+void updateLEDs() {
+    updateLEDsLIMIT();
+    return;
+    if (DYNAMIC_PACKETS) {
+        
+
+        for (int univ : dirtyUnivs) {
+            setSeq(univ, seqCounter);
+            udpSend_windows(packets[univ].raw);
+            seqCounter++;
+            
+        }
+        dirtyUnivs.clear();
+        clearDirtyMap();
+    }
+    else {
+        for (int u = 0; u < 97; u++) {
+            setSeq(u, seqCounter);
+            udpSend_windows(packets[u].raw);
+            seqCounter++;
+        }
+    }
     
+    return;
+   
 
 
     return;

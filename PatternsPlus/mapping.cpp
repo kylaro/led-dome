@@ -97,7 +97,7 @@ void Mapping::generateLLnodes() {
 			int didInsert = 0;
 			for (int i = 0; i < size; i++) {
 
-				if (node->y < nodesByY[i]->y) {
+				if (node->y > nodesByY[i]->y) {
 					//if our current LED is lower, that means it is now in the right place
 					nodesByY.insert(nodesByY.begin() + i, node);
 					didInsert = 1;
@@ -112,7 +112,11 @@ void Mapping::generateLLnodes() {
 		}
 		else {
 			nodesByY.push_back(node);
+			addedOne = true;
 		}
+	}
+	for (int i = nodesByY.size() - 1 - 14; i < nodesByY.size(); i++) {
+		bottomNodes.push_back(nodesByY[i]);
 	}
 	std::vector<int> doneStruts;
 	for (Node* node : nodesByY) {
@@ -161,7 +165,7 @@ void Mapping::generateLLnodes() {
 			if (reversed == 0) {
 				LLnode* startLLnode = new LLnode(strut->leds[0]);// strut->leds[i]
 				startLLnode->myStrut = strut->index;
-				startLLnode->myNode = node->index;
+				startLLnode->setNode(node);
 				startLLnode->strutDir = 1;
 				//this is the first node, it needs to be attached to all the other ones in this node
 				
@@ -182,7 +186,7 @@ void Mapping::generateLLnodes() {
 					LED* led = strut->leds[i];
 					newLLnode = new LLnode(led);
 					newLLnode->strutDir = 0;
-					newLLnode->myNode = node->index;
+					newLLnode->setNode(node);
 					newLLnode->myStrut = strut->index;
 					newLLnode->setPrev(prevLLnode);
 					prevLLnode->setNext(newLLnode);
@@ -198,12 +202,14 @@ void Mapping::generateLLnodes() {
 				newLLnode->setNext(lastLLnode);
 				if (node->index == strut->startNode->index) {
 					//this means the last node is the endnode
+
 					for (LLnode* llnode : llnodes_map[strut->endNode->index]) {
 						//llnode->setPrev(lastLLnode);
 						//lastLLnode->setNext(llnode);
 						llnode->addNeighbor(lastLLnode);
 						lastLLnode->addNeighbor(llnode);
 					}
+					lastLLnode->setNode( strut->endNode);
 					llnodes_map[strut->endNode->index].push_back(lastLLnode);
 					//printf("1");
 				}
@@ -213,7 +219,9 @@ void Mapping::generateLLnodes() {
 						//lastLLnode->setNext(llnode);
 						llnode->addNeighbor(lastLLnode);
 						lastLLnode->addNeighbor(llnode);
+						
 					}
+					lastLLnode->setNode(strut->startNode);
 					llnodes_map[strut->startNode->index].push_back(lastLLnode);
 					//printf("2");
 				}
@@ -225,7 +233,7 @@ void Mapping::generateLLnodes() {
 				//....
 				LLnode* startLLnode = new LLnode(strut->leds[strut->leds.size()-1]);// strut->leds[i]
 				//this is the first node, it needs to be attached to all the other ones in this node
-				startLLnode->myNode = node->index;
+				startLLnode->setNode(node);
 				startLLnode->myStrut = strut->index;
 				startLLnode->strutDir = 1;
 				for (LLnode* ll : llnodes_map[node->index]) {
@@ -243,7 +251,7 @@ void Mapping::generateLLnodes() {
 				for (int i = strut->leds.size()-2; i >= 1; i--) {
 					LED* led = strut->leds[i];
 					newLLnode = new LLnode(led);
-					newLLnode->myNode = node->index;
+					newLLnode->setNode(node);
 					newLLnode->strutDir = 0;
 					newLLnode->myStrut = strut->index;
 					newLLnode->setPrev(prevLLnode);
@@ -254,7 +262,7 @@ void Mapping::generateLLnodes() {
 				}
 				LLnode* lastLLnode = new LLnode(strut->leds[0]);
 				lastLLnode->myStrut = strut->index;
-				lastLLnode->myNode = node->index;
+				lastLLnode->setNode(node);
 				lastLLnode->strutDir = -1;
 				lastLLnode->setPrev(newLLnode);
 				newLLnode->setNext(lastLLnode);
@@ -266,6 +274,7 @@ void Mapping::generateLLnodes() {
 						llnode->addNeighbor(lastLLnode);
 						lastLLnode->addNeighbor(llnode);
 					}
+					lastLLnode->setNode(strut->endNode);
 					llnodes_map[strut->endNode->index].push_back(lastLLnode);
 					//printf("3");
 				}
@@ -276,6 +285,7 @@ void Mapping::generateLLnodes() {
 						llnode->addNeighbor(lastLLnode);
 						lastLLnode->addNeighbor(llnode);
 					}
+					lastLLnode->setNode(strut->startNode);
 					llnodes_map[strut->startNode->index].push_back(lastLLnode);
 					//printf("4");
 				}

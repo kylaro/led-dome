@@ -1,6 +1,7 @@
 #include "ShowLL.h"
 #include "../helpers.h""
 #include "../Effects/Firefly.h"
+#include "../Effects/HEXPulse.h"
 
 void ShowLL::run(bool real) {
 	
@@ -9,7 +10,7 @@ void ShowLL::run(bool real) {
 	static int curNode_i = 0;
 	rgb_f rgb_off = { 0,0,0 };
 	rgb_f rgb = { 1,1,1 };
-	double time = triangle(100);
+	double time = triangle(50);
 	int lastflipflop = flipflop;
 	if (time > 0.5) {
 		flipflop = 1;
@@ -18,7 +19,7 @@ void ShowLL::run(bool real) {
 		flipflop = 0;
 	}
 	int next = flipflop != lastflipflop;
-
+	next = 1;
 
 	/*for (LLnode* llnode : mapping->llnodes) {
 		if (llnode->nextSize() > 1 || llnode->prevSize() > 1) {
@@ -34,9 +35,15 @@ void ShowLL::run(bool real) {
 			ledInterface->setRGB(llnode->led, r);
 		}
 	}*/
-	
+	if (shared->spacePressedPipe) {
+		shared->spacePressedPipe = 0;
+		//effectEngine->apply(new Pinwheel(ledInterface, shared->mapping));
+		effectEngine->apply(new HEXPulse(ledInterface, shared->mapping));
+		//effectEngine->apply(new WhiteOut(ledInterface, shared->mapping));
+	}
 	if (next) {
-		effectEngine->apply(new Firefly(ledInterface,shared->mapping));
+		//effectEngine->apply(new Firefly(ledInterface,shared->mapping));
+		effectEngine->apply(new Firefly(ledInterface, shared->mapping));
 		//printf("next\n");
 		/*if (curNode == NULL) {
 			curNode = mapping->llnodes[0];

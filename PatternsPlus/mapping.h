@@ -24,7 +24,7 @@ public:
 	std::vector<LLnode*> llnodes;
 	std::map<int, std::vector<LLnode*>> llnodes_map;
 	std::vector<Node* > nodesByY;
-
+	std::vector<Node*> bottomNodes;
 private:
 	
 	bool isClose(float x, float y);

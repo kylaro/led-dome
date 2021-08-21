@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "led.h"
+#include "node.h"
 
 class LLnode {
 public:
@@ -23,9 +24,15 @@ public:
 	void setNext(LLnode* nextNode);
 	int myStrut = 0;
 	int myNode = 0;
+	Node* node;
+	void setNode(Node* node);
+	int whatNode();
 	LLnode* strutPrev();
 	LLnode* strutNext();
+	LLnode* getNextHighest();
 	LLnode* getNeighbor();
+	std::vector<LLnode*> nextHighest;
+	LLnode* nextHighestOnStrut = NULL;
 	void addNeighbor(LLnode* nb);
 	LLnode* myStrutNext = NULL;
 	LLnode* myStrutPrev = NULL;

@@ -9,7 +9,7 @@ void Firefly::init() {
 	//printf("%d\n", curNode->led->index);
 	initted = 1;
 	startTime = nowMillis();
-	on = { 1,.25 + (rand() % 10) / 50.0,0 };
+	on = { 1,.26 + (rand() % 10) / 40.0,0 };
 	//printf("%f\n", on.g);
 	speed = rand() % 6 / 12.0+0.7;
 }
@@ -43,7 +43,7 @@ void Firefly::run() {
 		}
 		//curNode = curNode->getNextDir(dir);
 
-		if (curNode == NULL || nowMillis() - startTime > 10000) {
+		if (speed < 0.07 ){//|| curNode == NULL || nowMillis() - startTime > 20000) {
 			release();
 			return;
 		}
@@ -52,7 +52,7 @@ void Firefly::run() {
 		irgb_f led = { curNode->led->index, on };
 		lights.push_back(led);
 		gonext = 0;
-		speed *= 0.98;
+		speed *= 0.96;
 	}
 	
 	for (int k = startIndex; k < lights.size(); k++) {
@@ -64,7 +64,7 @@ void Firefly::run() {
 		}
 		LEDs->setRGB(light.i, light.rgb);
 		lights[k].rgb.r *= 0.9;
-		lights[k].rgb.g *= 0.88;
+		lights[k].rgb.g *= 0.86;//
 		lights[k].rgb.b *= 0.8;
 		
 	}

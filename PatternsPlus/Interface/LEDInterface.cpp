@@ -1,10 +1,22 @@
 #include "LEDInterface.h"
 #include <cmath>
 #include <stdio.h>
-#include "../../Networking/ledcontrol.h"
 #include <map>
 
 
+void LEDInterface::clearDirtyMap() {
+
+    for (int i = 0; i < 530; i++) {
+        dirtyMap[i] = 0;
+    }
+}
+int LEDInterface::getDirtyMap(uint32_t led) {
+    return (dirtyMap[led / 32] >> (led % 32)) & 1;
+}
+
+void LEDInterface::setDirtyMap(uint32_t led) {
+    dirtyMap[led / 32] |= 1 << (led % 32);
+}
 
 //LOOP WHEEL
 double LEDInterface::sanitizeH(double x) {
@@ -32,6 +44,10 @@ double LEDInterface::sanitizeSV(double x) {
 
  LEDInterface::LEDInterface(bool real) {
     this->real = real;
+    rgb_f off = { 0,0,0 };
+    for (int i = 0; i < MAX_LEDS; i++) {
+        changesArray[i] = new LEDChange(i, off);
+    }
 }
 
  double LEDInterface::getScale() {
@@ -63,6 +79,31 @@ double LEDInterface::sanitizeSV(double x) {
 
 void LEDInterface::apply() {
     double scale = 1;/// getScale();
+    //uses arrray and dirtymap:
+
+    /*for (int i : dirtyLEDs) {
+        LEDChange* change = changesArray[i];
+        if (change->count != 0) {
+            setLED(change->index, (change->rgb.r * 255.0 * scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
+            change->count = 0;
+        }
+    }
+    clearDirtyMap();
+    dirtyLEDs.clear();
+    return;*/
+    //this uses the array:
+    
+    for (int i = 0; i < MAX_LEDS; i++) {
+        LEDChange* change = changesArray[i];
+        if (change->count != 0) {
+            setLED(change->index, (change->rgb.r * 255.0 * scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
+            change->count = 0;
+        }
+        
+    }
+    
+    return;
+    //this uses the vector:
     for (LEDChange* change : changes) {
         setLED(change->index, (change->rgb.r*255.0*scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
         free(change);
@@ -133,6 +174,14 @@ void LEDInterface::apply() {
    
 }
 
+void LEDInterface::clear() {
+    rgb_f off = { 0,0,0 };
+    for (int i = 0; i < MAX_LEDS; i++) {
+        changesArray[i]->rgb = off;
+        changesArray[i]->count = 0;
+    }
+}
+
 void LEDInterface::setRGB(int index, rgb_f rgb) {
     rgb.r = sanitizeSV(rgb.r);
     rgb.g = sanitizeSV(rgb.g);
@@ -147,8 +196,15 @@ void LEDInterface::setRGB(int index, rgb_f rgb) {
         changeVector->push_back(change);
         changes_map.insert({ index,changeVector });
     }*/
+    changesArray[index]->assimilate(rgb);
+    //changesArray[index]->rgb = rgb;//need to actually call function to add it in but whatever for now;
+    //changesArray[index]->count++;
+    //if (!getDirtyMap(index)) {
+    //    setDirtyMap(index);
+    //    dirtyLEDs.push_back(index); //actually slowes it down to keep track of dirty leds vs doing them all
+    //}
+    //changes.push_back(new LEDChange(index, rgb));
 
-    changes.push_back(new LEDChange(index, rgb));
 }
 
 void LEDInterface::setRGB(LED* led, rgb_f rgb) {

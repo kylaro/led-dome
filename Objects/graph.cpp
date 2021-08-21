@@ -7,6 +7,7 @@ Node* Graph::createNode(float x, float y, float z) {
 	
 	Node* newNode = new Node(x, y, z);
 	nodes.push_back(newNode);
+	newNode->index = nodes.size() - 1;
 	
 	return newNode;
 }

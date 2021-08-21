@@ -1,9 +1,19 @@
 #include "HEXPulse.h"
 #include "../helpers.h"
+void HEXPulse::setNode(int n) {
+	this->node = n;
+	this->nodeSet = 1;
+}
 void HEXPulse::init() {
 	startTime = nowMillis();
-	int node = std::rand() % mapping->dome->nodes.size();
+	if (nodeSet == 0) {
+		node = std::rand() % mapping->dome->nodes.size();
+	}
+	
 	Node* myNode = mapping->dome->nodes[node];
+	if (myNode->index != node) {
+		printf("of course it'snt working\n");
+	}
 	while (myNode->struts.size() < 5) {
 		node = std::rand() % mapping->dome->nodes.size();
 		myNode = mapping->dome->nodes[node];
@@ -67,7 +77,7 @@ void HEXPulse::release() {
 	}
 }
 void HEXPulse::run() {
-	double duration = 1000.0;
+	double duration = 1200.0;
 	if (initted == 0) {
 		init();
 	}

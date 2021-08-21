@@ -21,6 +21,7 @@ public:
 	int crossed = 0;
 	double speed = 1;
 	double gonext = 0;
+
 };
 
 

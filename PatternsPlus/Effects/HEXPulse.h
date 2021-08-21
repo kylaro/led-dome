@@ -10,10 +10,13 @@ public:
 	void init();
 	void run();
 	void release();
+	void setNode(int n);
 
 	std::vector<ihsv_f> leds;
 	int startTime = 0;
 	int initted = 0;
+	int node;
+	int nodeSet = 0;
 };
 
 

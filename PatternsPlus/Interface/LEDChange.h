@@ -7,9 +7,11 @@ public:
 	LEDChange(int i, rgb_f rgb);
 	int getWattsEXP(rgb_t rgb);
 	double getWatts(rgb_f rgb);
+	void assimilate(rgb_f rgb);
 	int index;
 	rgb_f rgb;
 	double watts;
+	double count = 0;
 	
 };
 

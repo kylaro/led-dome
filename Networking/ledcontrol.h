@@ -14,6 +14,7 @@
 #define MAX_LEDS 16384
 
 #define BRIGHTNESS_DIVIDE 1// divide eache leds max RGB by this, ex. if 3 then (255/3 = 80ish)
+#define DYNAMIC_PACKETS 1 // 0 off, 1 for on, when 0 it sends all packets all the time
 
 void updateLEDs();// Sends the current packet to the leds
 void updateLEDs(bool real);// does nothing if real is false

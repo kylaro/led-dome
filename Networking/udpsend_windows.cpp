@@ -31,7 +31,7 @@ int udpSend_windows(char* pkt) {
             return 1;
         }
 
-        s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+        s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);//IPPROTO_TCP
 
         clientService.sin_family = AF_INET;
         clientService.sin_addr.s_addr = inet_addr(HOSTNAME_WIN);

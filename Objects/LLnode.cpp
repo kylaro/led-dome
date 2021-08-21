@@ -82,7 +82,11 @@ void LLnode::setPrev(LLnode* prevNode) {
 	this->prevNodes.push_back(prevNode);
 }
 bool LLnode::nodeImpact() {
-	return nextNodes.size() > 1 || prevNodes.size()>1;
+	return neighbors.size() > 0;// nextNodes.size() > 1 || prevNodes.size() > 1;
+}
+
+int LLnode::whatNode() {
+	return myNode;
 }
 
 LLnode* LLnode::strutPrev() {
@@ -129,6 +133,97 @@ LLnode* LLnode::strutNext() {
 		return myStrutNext;
 	}
 	
+}
+
+void LLnode::setNode(Node * node) {
+	myNode = node->index;
+	this->node = node;
+}
+
+LLnode* LLnode::getNextHighest() {
+	if (nextHighestOnStrut != NULL) {
+    		return nextHighestOnStrut;
+	}
+	if (nextHighest.size() > 0) {
+		return nextHighest[rand() % nextHighest.size()];
+	}
+	LLnode* highest = this;
+	double highest_y = highest->led->y;
+	/*
+	if ( nodeImpact()) {
+		if (this->led->y < this->node->y) {
+			highest_y = this->node->y;
+		}
+		else {
+			highest_y = this->led->y;
+		}
+		
+	}*/
+	
+	for (LLnode* next : nextNodes) {
+		if (next->led->y > highest_y) {
+			nextHighest.push_back(next);
+			//highest = next;
+			//highest_y = next->led->y;
+		}
+	}
+	for (LLnode* next : prevNodes) {
+		if (next->led->y > highest_y) {
+			nextHighest.push_back(next);
+			//highest = next;
+			//highest_y = next->led->y;
+		}
+	}
+	for (LLnode* next : neighbors) {
+		if (next->led->y > this->node->y) {
+			nextHighest.push_back(next);
+		}
+		if (next->led->y > highest_y) {
+			//nextHighest.push_back(next);
+			//uncommment this for correctness
+		}
+	}
+	//nextHighest = highest;
+	/*
+	std::vector<LLnode*>::iterator it = nextHighest.begin();
+	while (it != nextHighest.end())
+	{
+		LLnode* llnode = *it;
+		if (llnode->getNext() != NULL) {
+			if (llnode->getNext()->led->y < llnode->led->y) {
+				//it is rip, this one should be removed
+				it = nextHighest.erase(it);
+				//free(eff);
+				continue;
+			}
+			else {
+				it++;
+			}
+		}
+		else if (llnode->getPrev() != NULL) {
+			if (llnode->getPrev()->led->y < llnode->led->y) {
+				//it is rip, this one should be removed
+				it = nextHighest.erase(it);
+				//free(eff);
+				continue;
+			}
+			else {
+				it++;
+			}
+		}
+		else {
+			printf("We're going to have a problem here..\n");
+		}
+	}*/
+
+	for (LLnode* llnode : nextHighest) {
+		if (llnode->myStrut == myStrut) {
+			nextHighestOnStrut = llnode;
+			return llnode;
+		}
+	}
+	
+       	return nextHighest[rand()%nextHighest.size()];
 }
 
 LLnode* LLnode::getNeighbor() {
@@ -196,10 +291,12 @@ LLnode* LLnode::getNextDir(int dir) {
 }
 
 LLnode* LLnode::getNext()
-{
+{	
+	
 	if (nextNodes.size() == 0) {
 		return NULL;
 	}
+	return(nextNodes[0]);
 	return this->nextNodes[rand()%nextNodes.size()];
 }
 
@@ -208,5 +305,6 @@ LLnode* LLnode::getPrev()
 	if (prevNodes.size() == 0) {
 		return NULL;
 	}
+	return(prevNodes[0]);
 	return this->prevNodes[rand() % prevNodes.size()];
 }

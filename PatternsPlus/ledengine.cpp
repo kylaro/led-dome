@@ -58,6 +58,17 @@ void handleBuffer(char * buffer) {
 	}
 }
 
+void updateLEDsThread() {
+	while (1) {
+		int elapsed = 0;
+		int beginMicros = nowMicros();
+		updateLEDs();
+		while ((elapsed = nowMicros() - (beginMicros)) < framerate_micros) {
+
+		}
+	}
+}
+
 void runEngine() {
 	init();
 	shared->clearBuffer();
@@ -92,7 +103,8 @@ void runEngine() {
 
 	uint32_t timer = 0;
 	clearLEDs();
-	
+	//std::thread ledthread(updateLEDsThread);
+	//ledthread.detach();
 	while (1) {
 		//PREPARE STATISTICS
 		count++;
@@ -108,16 +120,16 @@ void runEngine() {
 			realPattern->effectEngine = effectEngineReal;
 			timer = nowMicros();
 			realPattern->run(true);
-			printf("\tpatrun=\t%d\n", nowMicros() - timer);
+			//printf("\n\tpatrun=\t%d\n", nowMicros() - timer);
 
 			timer = nowMicros();
 			effectEngineReal->run();
-			printf("\teffect=\t%d\n", nowMicros() - timer);
+			//printf("\teffect=\t%d\n", nowMicros() - timer);
 			shared->viewReal = true;
 
 			timer = nowMicros();
 			ledInterfaceReal->apply();
-			printf("\tledint=\t%d\n", nowMicros() - timer);
+			//printf("\tledint=\t%d\n", nowMicros() - timer);
 		}
 		else {
 			//run both if they are different
@@ -169,7 +181,10 @@ void runEngine() {
 					printf("Real = simulation\n");
 					if (real_pattern_i != sim_pattern_i) {
 						effectEngineReal->clear();
-						clearLEDs();
+						ledInterfaceReal->clear();
+						clearLEDs(true);
+						clearLEDs(true);
+						clearLEDs(true);
 
 					}
 					real_pattern_i = sim_pattern_i;

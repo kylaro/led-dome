@@ -42,7 +42,7 @@ Dome::Dome() {
 		}
 		Node* newNode = Graph::createNode(vertices[i][0], vertices[i][1], vertices[i][2]);
 		
-		newNode->index = i;
+		//newNode->index = i;//this is wrong
 		nodes_array[i] = newNode;
 	}
 

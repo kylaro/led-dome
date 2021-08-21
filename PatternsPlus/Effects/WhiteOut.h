@@ -10,6 +10,7 @@ public:
 	void run();
 	void init();
 	void release();
+	int startTime = 0;
 };
 
 
