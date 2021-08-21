@@ -33,10 +33,41 @@ namespace easy3d {
 		action: 1 is press, 0 is release
 		modifiers: 1 is shift, 2 is control, 4 is alt
 	*/
+
+	char buffer[100];
+	int buffer_i = 0;
+
+	void submitBuffer() {
+		printf("->\n%s\n",buffer);
+	}
+
 	bool DomeViewer::callback_event_keyboard(int key, int action, int modifiers) {
 		if (action == 1) {
-			printf("{key:%c , action:%d, modifiers:%d}\n", key, action, modifiers);
+			switch (key) {
+				case 257:
+					//printf("ENTER");
+					buffer[buffer_i] = 0;
+					submitBuffer();
+					while (buffer_i != 0) {
+						buffer[buffer_i] = 0;
+						buffer_i -= 1;
+					}
+					buffer_i = 0;
+					break;
+				case 259:
+					//printf("BACKSPACE");
+					buffer[buffer_i] = 0;
+					buffer_i = buffer_i > 0 ? buffer_i - 1 : 0;
+					printf("\b \b");
+					break;
+				default:
+					buffer[buffer_i] = key;
+					buffer_i = buffer_i < 90 ? buffer_i + 1 : 90;//hope this never happens - typing more than 90 without submitting lol
+					printf("%c", key);
+			}
+			//printf("{key:%d , action:%d, modifiers:%d}\n", key, action, modifiers);
 			
+			buffer[buffer_i] = key;
 			myDome->dataPipe = 1;
 		}
 		return false;
