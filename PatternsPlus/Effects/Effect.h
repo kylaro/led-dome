@@ -10,6 +10,7 @@ public:
 	Effect(LEDInterface * myInterface, Mapping * mapping);
 
 	virtual void run();
+	virtual void init();
 
 	LEDInterface * LEDs;
 	Mapping* mapping;

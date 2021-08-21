@@ -2,8 +2,12 @@
 #include <cmath>
 #include <stdio.h>
 #include "../../Networking/ledcontrol.h"
+#include <map>
 
-double LEDInterface::sanitize(double x) {
+
+
+//LOOP WHEEL
+double LEDInterface::sanitizeH(double x) {
     //CONVERT THIS X VALUE TO BE BETWEEN 0 AND 1 PLEASE
     if (x < 0) {
         x *= -1;//ok now it is positive
@@ -14,47 +18,158 @@ double LEDInterface::sanitize(double x) {
     return x;
 }
 
+//MAX / MIN
+double LEDInterface::sanitizeSV(double x) {
+    //CONVERT THIS X VALUE TO BE BETWEEN 0 AND 1 PLEASE
+    if (x < 0) {
+        return 0;
+    }
+    if (x > 1) {
+        return 1;
+    }
+    return x;
+}
+
  LEDInterface::LEDInterface(bool real) {
     this->real = real;
 }
 
-void LEDInterface::apply() {
-    //need this to accumulate
-    for (LEDChange* change : changes) {
-        if (change->rgborhsv == 0) { // USE RGB
-            setLED(change->index, change->rgb.r, change->rgb.g, change->rgb.b, real);
-
-        }
-        else {//USE HSV
-            
-        }
-    }
-    changes.clear();
+ double LEDInterface::getScale() {
+     uint32_t rgbTotal = 0;
+     for (int i = 0; i < MAX_LEDS; i++) {
+         led_t * led = getLED(i);
+         rgbTotal += led->r;
+         rgbTotal += led->g;
+         rgbTotal += led->b;
+     }
+     double watts = 120 + 0.03 * (12.0 * rgbTotal) / 255.0;
+     
+     double max_watts = 1000.0;
+     double scale = max_watts / watts;
+     
+     if (scale > 1) {
+         scale = 1.0;
+     }
+     printf("watts=\t%f\tscale:\t%f\n", watts, scale);
+     return scale;
+     
 }
 
- void LEDInterface::setRGB(LED* led, double r, double g, double b) {
-     rgb_t rgb;
-     rgb.r = r * 255;
-     rgb.g = g * 255;
-     rgb.b = b * 255;
-     changes.push_back(new LEDChange(led->index, rgb));
- }
+void LEDInterface::apply() {
+    double scale = getScale();
+    for (LEDChange* change : changes) {
+        setLED(change->index, (change->rgb.r*255.0*scale), (change->rgb.g * 255.0 * scale), (change->rgb.b * 255.0 * scale), real);
+    }
+    changes.clear();
 
-void LEDInterface::HSVtoRGB(double H, double S, double V) {
-    H *= 360;
-    S *= 100;
-    V *= 100;
+    return;
 
-    if (H > 360 || H < 0 || S>100 || S < 0 || V>100 || V < 0) {
-        printf("The given HSV values are not in valid range\n");
+
+
+    
+    double maxWatts = 1800;
+    static uint32_t totalRGB = 0;
+    double totalWatts = 120+12.0*(totalRGB/255.0)*.025;//seems like just idle watts is 120... lol thats a lot tho
+    
+    
+
+    for (std::pair<int, std::vector<LEDChange*>*> it : changes_map) {
+        rgb_f rgb = { 0,0,0 };
+        double size = it.second->size();
+        //sum the changes
+        for (LEDChange* change : *it.second) {
+            rgb.r += change->rgb.r;
+            rgb.g += change->rgb.g;
+            rgb.b += change->rgb.b;
+        }
+        //avg the changes together
+        rgb.r /= size;
+        rgb.g /= size;
+        rgb.b /= size;
+        //create a final change object, need to do this bc first calculate total watts before setting leds
+        
+        if (usePowerMonitoring == false) {
+            rgb.r *= scale;
+            rgb.g *= scale;
+            rgb.b *= scale;
+            setLED(it.first, (rgb.r * 255), (rgb.g * 255), (rgb.b * 255));
+        }
+        else {
+            LEDChange* combinedChange = new LEDChange(it.first, rgb);
+            changes.push_back(combinedChange);
+        }
+        
+        //subtract previous led watts
+        
+    }
+    changes_map.clear();
+    if (usePowerMonitoring == false) {
         return;
     }
-    float s = S / 100;
-    float v = V / 100;
-    float C = s * v;
-    float X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
-    float m = v - C;
-    float r, g, b;
+
+    /*
+    //need this to accumulate
+    double scale = (maxWatts / totalWatts) > 1 ? 1 : (maxWatts/totalWatts);
+    for (LEDChange* change : changes) {
+        led_t* prev_led = getLED(change->index);
+        rgb_t prev_rgb = { prev_led->r,prev_led->g,prev_led->b};
+        rgb_f new_rgb = { change->rgb.r * scale, change->rgb.g * scale, change->rgb.b * scale };
+        rgb_t new_rgb_t = { 255.0*new_rgb.r, 255.0 * new_rgb.g, 255.0 * new_rgb.b };
+        
+        totalRGB += change->getWattsEXP(new_rgb_t);
+        totalRGB -= change->getWattsEXP(prev_rgb);
+        setLED(change->index, (new_rgb_t.r), (new_rgb_t.g), (new_rgb_t.b), real);
+    }
+    changes.clear();
+    */
+   
+}
+
+void LEDInterface::setRGB(int index, rgb_f rgb) {
+    rgb.r = sanitizeSV(rgb.r);
+    rgb.g = sanitizeSV(rgb.g);
+    rgb.b = sanitizeSV(rgb.b);
+    /*LEDChange* change = new LEDChange(index, rgb);
+    if (changes_map.find(index) != changes_map.end()) {
+        //If there is already an ledchange object here
+        changes_map[index]->push_back(change);
+    }
+    else {
+        std::vector<LEDChange*>* changeVector = new std::vector<LEDChange*>();
+        changeVector->push_back(change);
+        changes_map.insert({ index,changeVector });
+    }*/
+
+    changes.push_back(new LEDChange(index, rgb));
+}
+
+void LEDInterface::setRGB(LED* led, rgb_f rgb) {
+    setRGB(led->index, rgb);
+}
+
+void LEDInterface::setHSV(LED* led, hsv_f hsv) {
+    setHSV(led->index, hsv);
+ }
+
+void LEDInterface::setHSV(int index, hsv_f hsv) {
+    hsv.h = sanitizeH(hsv.h);
+    hsv.s = sanitizeSV(hsv.s);
+    hsv.v = sanitizeSV(hsv.v);
+
+    setRGB(index, HSVtoRGB(hsv));
+}
+
+rgb_f LEDInterface::HSVtoRGB(hsv_f hsv) {
+    double H = hsv.h * 360.0;
+    double S = hsv.s * 100.0;
+    double V = hsv.v * 100.0;
+
+    double s = S / 100;
+    double v = V / 100;
+    double C = s * v;
+    double X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
+    double m = v - C;
+    double r, g, b;
     if (H >= 0 && H < 60) {
         r = C, g = X, b = 0;
     }
@@ -73,7 +188,10 @@ void LEDInterface::HSVtoRGB(double H, double S, double V) {
     else {
         r = C, g = 0, b = X;
     }
-    int R = (r + m) * 255;
-    int G = (g + m) * 255;
-    int B = (b + m) * 255;
+    
+    double R = (r + m);// *255;
+    double G = (g + m);// * 255;
+    double B = (b + m);// * 255;
+    rgb_f rgb = { R,G,B };
+    return rgb;
 }

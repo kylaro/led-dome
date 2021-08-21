@@ -15,10 +15,13 @@ led_t leds[MAX_LEDS];
 led_t leds_sim[MAX_LEDS];
 led_t ledbuffer[MAX_LEDS];
 
-uint32_t dirtyMap[4];
+
 
 std::vector<int> dirtyUnivs;
 uint8_t seqCounter = 0;
+
+
+uint32_t dirtyMap[4];
 
 void clearDirtyMap() {
     dirtyMap[0] = 0;
@@ -88,9 +91,25 @@ led_t* getLED(uint32_t i, bool real) {
 
 }
 
+
+
+//everything has already been done, we just gotta update the array and universe modified thing
+void setLED(uint32_t i) {
+    uint16_t uni = getUniverse(i);
+    if (!getDirtyMap(uni)) {
+        dirtyUnivs.push_back(uni);
+    }
+   
+    setDirtyMap(uni);
+   
+    modified_universes[uni] = 1; // mark it as changed so we can send an update packet
+}
+
 void clearLEDs() {
     for (int i = 0; i < MAX_LEDS; i++) {
-        setLED(i,0);
+        setLED(i, 0);
+        setLED(i);
+
     }
     updateLEDs();
 
@@ -105,18 +124,6 @@ void clearLEDs(bool real) {
         setLED(i, 0, false);
     }
 
-}
-
-//everything has already been done, we just gotta update the array and universe modified thing
-void setLED(uint32_t i) {
-    uint16_t uni = getUniverse(i);
-    if (!getDirtyMap(uni)) {
-        dirtyUnivs.push_back(uni);
-    }
-   
-    setDirtyMap(uni);
-   
-    modified_universes[uni] = 1; // mark it as changed so we can send an update packet
 }
 
 void setLED(uint32_t i, uint32_t rgb) {
@@ -134,7 +141,7 @@ void setLED(uint32_t i, uint32_t rgb) {
     
 }
 void setLED(uint32_t i, uint8_t red, uint8_t green, uint8_t blue) {
-    if (leds[i].r != red && leds[i].g != green && leds[i].b != blue) {
+    if (leds[i].r != red || leds[i].g != green || leds[i].b != blue) {
         setLED(i);//only set on change
     }
     leds[i].r = red;

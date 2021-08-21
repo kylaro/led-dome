@@ -8,8 +8,11 @@ public:
 	using Effect::Effect;
 
 	void init();
-
 	void run();
+
+	std::vector<ihsv_f> leds;
+	int startTime = 0;
+	int initted = 0;
 };
 
 

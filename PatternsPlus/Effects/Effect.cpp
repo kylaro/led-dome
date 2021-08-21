@@ -10,3 +10,7 @@ void Effect::run() {
 
 
 }
+void Effect::init() {
+
+
+}

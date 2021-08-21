@@ -16,7 +16,7 @@ uint32_t numLeds = 0;
 
 void RainbowSweeps:: run(bool real) {
 	
-	double t = time(4000);
+	double t = triangle(4000);
 
 	//pats.push_back(rainsweep);
 
@@ -50,8 +50,13 @@ void RainbowSweeps:: run(bool real) {
 			//color = sharpenRGB(color, 200);
 			//color = color > 0;
 			//color = wheel(-t * 256 + i / 8) * color;
+			rgb_f rgb = { (double)getR(color)/255.0, (double)getG(color) / 255.0, (double)getB(color) / 255.0 };
+			hsv_f hsv = { t*2 + 8*i / (double) numLeds, 1 , 1};
 			if (ledConfirmed(mapping->phiLeds[i]))
-				setLED(index, (color), real);
+				ledInterface->setHSV(index, hsv);
+				//ledInterface->setRGB(index, (rgb));
+			//if (ledConfirmed(mapping->phiLeds[i]))
+			//	setLED(index, (color), real);
 				
 		}
 
@@ -107,7 +112,7 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-			if (ledConfirmed(index))
+			if (ledConfirmed(mapping->zLeds[i]))
 				setLED(index, (color), real);
 		}
 		
@@ -121,7 +126,7 @@ void RainbowSweeps:: run(bool real) {
 			color = sharpenRGB(color, 200);
 			color = color > 0;
 			color = wheel(-t * 256 + i / 8) * color;
-			if (ledConfirmed(index))
+			if (ledConfirmed(mapping->tanLeds[i]))
 				setLED(index, (color), real);
 		}
 		break;

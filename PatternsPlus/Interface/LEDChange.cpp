@@ -1,15 +1,15 @@
 #include "LEDChange.h"
 
-LEDChange::LEDChange(int i, rgb_t rgb) {
-	index = i;
-	this->rgb = rgb;
-	rgborhsv = 0;
-	this->hsv = { 0,0,0 };
+int LEDChange::getWattsEXP(rgb_t rgb) {
+	return rgb.r + rgb.g + rgb.b;
 }
 
-LEDChange::LEDChange(int i, hsv_t hsv) {
+double LEDChange::getWatts(rgb_f rgb) {
+	return 12.0 * (rgb.r*0.02 + rgb.g* 0.02 + rgb.b* 0.02);//12v * 20mA max/LED
+}
+
+LEDChange::LEDChange(int i, rgb_f rgb) {
 	index = i;
-	this->hsv = hsv;
-	rgborhsv = 1;
-	this->rgb = { 0,0,0 };
+	this->rgb = rgb;
+	watts = getWatts(rgb);
 }

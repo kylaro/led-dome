@@ -4,6 +4,7 @@
 #include "../../Objects/led.h"
 #include "../helpers.h"
 #include <cstdint>
+#include <unordered_map>
 #include "LEDChange.h"
 
 //THE RULES FOR THIS CLASS
@@ -12,24 +13,25 @@
 
 class LEDInterface {
 public:
+	double sanitizeH(double x);
+	double sanitizeSV(double x);
 	LEDInterface(bool real);
 
+	double getScale();
+
 	std::vector<LEDChange*> changes;
+	std::unordered_map<int, std::vector<LEDChange*>*> changes_map;
 
 	bool real = false;
-	void setRGB(LED * led, double r, double g, double b);
-	void setR(LED* led, double r);
-	void setG(LED* led, double g);
-	void setB(LED* led, double b);
-	
-	void setHSV(LED * led, double h, double s, double v);
-	void setH(LED* led, double h);
-	void setS(LED* led, double s);
-	void setV(LED* led, double v);
+	void setRGB(LED * led, rgb_f rgb);
+	void setRGB(int index, rgb_f rgb);
+	void setHSV(LED * led, hsv_f hsv);
+	void setHSV(int index, hsv_f hsv);
 
-	void HSVtoRGB(double H, double S, double V);
-
+	bool usePowerMonitoring = false;
 	void apply();
+
+	rgb_f HSVtoRGB(hsv_f hsv);
 	double sanitize(double x);
 };
 

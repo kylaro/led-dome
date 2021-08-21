@@ -4,12 +4,13 @@
 #include "../color_structs.h"
 class LEDChange {
 public:
-	LEDChange(int i, rgb_t rgb);
-	LEDChange(int i, hsv_t rgb);
+	LEDChange(int i, rgb_f rgb);
+	int getWattsEXP(rgb_t rgb);
+	double getWatts(rgb_f rgb);
 	int index;
-	rgb_t rgb;
-	hsv_t hsv;
-	int rgborhsv = 0; // 0 is rgb, 1 is hsv
+	rgb_f rgb;
+	double watts;
+	
 };
 
 

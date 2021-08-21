@@ -18,7 +18,7 @@
 Dome* dome;
 Shared* shared;
 
-#define FRAME_RATE 100 //duh. suggestd max is 350 to ensure controller can handle all the packets
+#define FRAME_RATE 69 //duh. suggestd max is 350 to ensure controller can handle all the packets
 uint32_t framerate_nanos = (1 / ((float)FRAME_RATE)) * 1e9;
 uint32_t framerate_micros = (1 / ((float)FRAME_RATE)) * 1e6;
 uint32_t framerate_millis = (1 / ((float)FRAME_RATE)) * 1e3;
@@ -74,6 +74,7 @@ void runEngine() {
 
 	patterns.push_back(new UsingEffects(shared));
 	patterns.push_back(new RainbowSweeps(shared));
+	
 	patterns.push_back(new RGB(shared));
 
 	Pattern* realPattern = patterns[0];
@@ -89,7 +90,7 @@ void runEngine() {
 	double freetime = 0;
 
 	uint32_t timer = 0;
-	
+	clearLEDs();
 	
 	while (1) {
 		//PREPARE STATISTICS
@@ -104,10 +105,18 @@ void runEngine() {
 		if (real_pattern_i == sim_pattern_i) {
 			realPattern->ledInterface = ledInterfaceReal;
 			realPattern->effectEngine = effectEngineReal;
+			timer = nowMicros();
 			realPattern->run(true);
+			printf("\tpatrun=\t%d\n", nowMicros() - timer);
+
+			timer = nowMicros();
 			effectEngineReal->run();
+			printf("\teffect=\t%d\n", nowMicros() - timer);
 			shared->viewReal = true;
+
+			timer = nowMicros();
 			ledInterfaceReal->apply();
+			printf("\tledint=\t%d\n", nowMicros() - timer);
 		}
 		else {
 			//run both if they are different
@@ -125,11 +134,11 @@ void runEngine() {
 		}
 		//RUN THE EFFECTS THAT THE PATTERNS HAVE CREATED
 		
-		//printf("RUN=%d\n", nowMicros() - timer);
+		printf("RUN=%d\n", nowMicros() - timer);
 		//Then update leds
 		timer = nowMicros();
 		updateLEDs();
-		//printf("UPD=%d\n", nowMicros() - timer);
+		printf("UPD=%d\n", nowMicros() - timer);
 		//WARN IF FREETIME IS LOW
 		freetime = ((double)(framerate_micros - (nowMicros() - beginMicros))) / framerate_micros;
 
@@ -139,9 +148,9 @@ void runEngine() {
 		if (freetime_avg < 0.2) {
 			printf("Warning, free time between patterns is very low at: %f out of 1\n", freetime);
 			printf("FreetimeAVG = %f\n", freetime_avg);
-		} else {
-			freetime_avg = (freetime_avg * 9 + freetime) / 10.0; // keep track of average freetime
-		}
+		} 
+		freetime_avg = (freetime_avg * 9 + freetime) / 10.0; // keep track of average freetime
+		
 
 		//PROCESS USER INPUT DURING FREE TIME
 		//note: nowNanos wraps to 0 

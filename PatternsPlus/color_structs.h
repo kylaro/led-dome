@@ -1,10 +1,13 @@
 #ifndef COLORSTRUCTS_H
 #define COLORSTRUCTS_H
+#include <cstdint>
+
+
 
 typedef struct {
-	int r;
-	int g;
-	int b;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
 } rgb_t;
 
 typedef struct {
@@ -24,5 +27,15 @@ typedef struct {
 	double s;
 	double v;
 } hsv_f;
+
+typedef struct {
+	uint32_t i;
+	rgb_f rgb;
+} irgb_f;
+
+typedef struct {
+	uint32_t i;
+	hsv_f hsv;
+} ihsv_f;
 
 #endif
