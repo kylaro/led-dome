@@ -10,6 +10,7 @@
 #include <thread>
 #include "PatternsPlus/ledengine.h"
 #include "PatternsPlus/mapping.h"
+#include "Networking/DomeServer.h"
 using namespace std;
 
 //count lines of code in powershell lol:
@@ -20,10 +21,15 @@ int main()
 	Shared* sharedObject = new Shared();//a shared object to transfer data between threads
 	sharedObject->dome = theDome;
 
+
 	giveEngineShared(sharedObject);
 
-	std::thread ledthread( runEngine);
+	std::thread ledthread( runEngine );
 	ledthread.detach();
+
+	std::thread serverThread(server::start);
+	serverThread.detach();
+
 	domeToViewer(theDome, sharedObject);
 
 	return 0;

@@ -44,10 +44,11 @@ public:
 	LLnode* myStrutNext = NULL;
 	LLnode* myStrutPrev = NULL;
 	bool isGood();
+	std::vector<LLnode*> neighbors;//only nodes from other struts
 private:
 	std::vector<LLnode*> prevNodes;
 	std::vector<LLnode*> nextNodes;
-	std::vector<LLnode*> neighbors;//only nodes from other struts
+	
 
 	
 

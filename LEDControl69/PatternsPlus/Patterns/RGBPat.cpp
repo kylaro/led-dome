@@ -1,7 +1,7 @@
 
 
 #include "RGBPat.h"
-#include "../helpers.h""
+#include "../helpers.h"
 double t = 0;
 void RGBPat::run(bool real) {
 	t = time(10000);

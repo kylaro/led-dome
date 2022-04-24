@@ -491,7 +491,7 @@ LLnode* LLnode::getNext()
 		return NULL;
 	}
 	return(nextNodes[0]);
-	return this->nextNodes[rand()%nextNodes.size()];
+	
 }
 
 LLnode* LLnode::getPrev()

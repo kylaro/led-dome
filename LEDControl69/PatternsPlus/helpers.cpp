@@ -23,6 +23,7 @@ void loadCalibration(Dome* dome) {
 			dome->struts[edge]->confirmed = confirmed;
 			dome->struts[edge]->reversed = reversed;
 			dome->struts[edge]->regenLEDs();
+			printf("%d %d %d\n", led, confirmed, reversed);
 		}
 		dome->regenLEDs();
 

@@ -11,7 +11,7 @@ void Firefly::init() {
 	startTime = nowMillis();
 	on = { 1,.26 + (rand() % 10) / 40.0,0 };
 	//printf("%f\n", on.g);
-	speed = rand() % 6 / 12.0+0.7;
+	speed = rand() % 6 / 12.0 + 0.7;
 }
 void Firefly::release() {
 	done = 1;

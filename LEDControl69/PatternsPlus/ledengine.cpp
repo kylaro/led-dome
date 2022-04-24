@@ -19,6 +19,7 @@
 #include "Patterns/Fireworks.h"
 #include "Patterns/Fireflies.h"
 #include "Patterns/Pershing.h"
+#include "Patterns/Growth.h"
 
 Dome* dome;
 Shared* shared;
@@ -89,17 +90,19 @@ void runEngine() {
 	//todo in the future, map specific keys to specific patterns?
 	
 	patterns.push_back(new Pershing(shared));
-	patterns.push_back(new Snake(shared));
+	patterns.push_back(new Growth(shared));
+	///patterns.push_back(new Snake(shared));
 	patterns.push_back(new Fireflies(shared));
 	patterns.push_back(new TwinklyNight(shared));
-	patterns.push_back(new Fireworks(shared));
-	patterns.push_back(new RainbowSweeps(shared));
-	patterns.push_back(new RGBPat(shared));
+	//patterns.push_back(new Fireworks(shared));
+	//patterns.push_back(new RainbowSweeps(shared));
+	//patterns.push_back(new RGBPat(shared));
 
-	Pattern* realPattern = patterns[0];
-	Pattern* simulatedPattern = patterns[0];
 	int sim_pattern_i = 0;
 	int real_pattern_i = 0;
+	Pattern* realPattern = patterns[real_pattern_i];
+	Pattern* simulatedPattern = patterns[sim_pattern_i];
+	
 	int patterns_len = patterns.size();
 	
 	uint32_t beginMicros = nowMicros();
